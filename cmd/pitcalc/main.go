@@ -10,6 +10,8 @@ import (
 	"strings"
 
 	"github.com/myanmar-pit-calculator/pkg/pitcalc"
+	"golang.org/x/text/language"
+	"golang.org/x/text/message"
 )
 
 func main() {
@@ -115,9 +117,10 @@ func main() {
 		fmt.Printf("Error in calculating PIT: %v\n", err)
 	}
 	fmt.Println("=====================================")
-	fmt.Printf("Total Taxable Income: %.2f MMK\n", output.TotalTexable)
-	fmt.Printf("Total Reliefs: %.2f MMK\n", output.TotalRelief)
-	fmt.Printf("Total Personal Income Tax: %.2f MMK\n", output.TotalTax)
+	fmt.Printf(
+		"Total Taxable Income: %s\n", currencyFormat(output.TotalTexable))
+	fmt.Printf("Total Reliefs: %s\n", currencyFormat(output.TotalRelief))
+	fmt.Printf("Total Personal Income Tax: %s\n", currencyFormat(output.TotalTax))
 	sort.Slice(output.TaxBreakdown, func(i, j int) bool {
 
 		return output.TaxBreakdown[i].Start < output.TaxBreakdown[j].Start
@@ -126,10 +129,16 @@ func main() {
 
 		if v.Limit == math.Inf(1) {
 
-			fmt.Printf("  Above %.0f MMK: %.2f MMK\n", v.Start, v.Amount)
+			fmt.Printf(
+				"  Above from %s: %s\n",
+				currencyFormat(v.Start),
+				currencyFormat(v.Amount))
 		} else {
 
-			fmt.Printf("  Up to %.0f MMK: %.2f MMK\n", v.Limit, v.Amount)
+			fmt.Printf(
+				"  Up to %s: %s\n",
+				currencyFormat(v.Limit),
+				currencyFormat(v.Amount))
 		}
 	}
 	fmt.Println("=====================================")
@@ -155,4 +164,9 @@ func inputInt(prompt string, validate func(int) *string) int64 {
 		}
 		fmt.Println(errMessage)
 	}
+}
+
+func currencyFormat(amount float64) string {
+
+	return message.NewPrinter(language.English).Sprintf("%.2f MMK", amount)
 }
