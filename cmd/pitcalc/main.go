@@ -1,172 +1,153 @@
 package main
 
 import (
-	"bufio"
+	"errors"
 	"fmt"
-	"math"
-	"os"
-	"sort"
+	"log"
 	"strconv"
 	"strings"
 
-	"github.com/myanmar-pit-calculator/pkg/pitcalc"
-	"golang.org/x/text/language"
-	"golang.org/x/text/message"
+	"github.com/charmbracelet/bubbles/textinput"
+	tea "github.com/charmbracelet/bubbletea"
 )
+
+type step int64
+
+const (
+	stepMonthlyIncome step = iota
+	stepConfirm
+)
+
+type model struct {
+	step               step
+	monthlyIncomeInput textinput.Model
+
+	monthlyIncome float64
+
+	errMessage *string
+}
 
 func main() {
 
-	fmt.Println("=====================================")
-	fmt.Println("   🇲🇲 Myanmar PIT Calculator (CLI)")
-	fmt.Println("=====================================")
+	p := tea.NewProgram(initialModel())
 
-	monthlyIncome := inputInt(
-		"Enter monthly income (MMK): ",
-		func(value int) *string {
+	final, err := p.Run()
+	if err != nil {
+		log.Fatal(err)
+	}
 
-			if value <= 0 {
+	m := final.(model)
 
-				errMessage := "❌ Monthly income must be greater than 0."
-				return &errMessage
-			}
-			return nil
-		},
-	)
+	fmt.Println("========== RESULTS ==========")
+	fmt.Println("Monthly Income:     ", m.monthlyIncome)
+	fmt.Println("=============================")
+}
 
-	startingMonth := inputInt(
-		"Enter starting month (1 = Jan, 2 = Feb, ..., 12 = Dec): ",
-		func(value int) *string {
+func initialModel() model {
 
-			if value < 1 || value > 12 {
+	monthlyIncomeInput := textinput.New()
+	monthlyIncomeInput.Placeholder = "500000"
+	monthlyIncomeInput.Width = 20
+	monthlyIncomeInput.Focus()
 
-				errMessage := "❌ Starting month must be between 1 and 12."
-				return &errMessage
-			}
-			return nil
-		},
-	)
+	return model{
 
-	dependentParents := inputInt(
-		"Enter number of dependent parents (1,000,000 MMK for each): ",
-		func(value int) *string {
+		step:               stepMonthlyIncome,
+		monthlyIncomeInput: monthlyIncomeInput,
+	}
+}
 
-			if value < 0 {
+func parseNumericInput(input string) (*float64, error) {
 
-				errMessage := "❌ Number of dependent parents cannot be negative."
-				return &errMessage
-			}
-			if value > 2 {
+	clean := strings.ReplaceAll(strings.TrimSpace(input), ",", "")
 
-				errMessage := "❌ Number of dependent parents cannot exceed 2."
-				return &errMessage
-			}
-			return nil
-		},
-	)
+	value := 0.0
+	if clean == "" {
+		return &value, nil
+	}
 
-	dependentSpouse := inputInt(
-		"Do you have a dependent spouse? (1 = Yes, 0 = No): ",
-		func(value int) *string {
-
-			if value != 0 && value != 1 {
-
-				errMessage := "❌ Invalid input. Please enter 1 for Yes or 0 for No."
-				return &errMessage
-			}
-			return nil
-		},
-	)
-
-	childrens := inputInt(
-		"Enter number of children (500,000 MMK for each): ",
-		func(value int) *string {
-
-			if value < 0 {
-
-				errMessage := "❌ Number of children cannot be negative."
-				return &errMessage
-			}
-			return nil
-		},
-	)
-
-	ssb := inputInt(
-		"Enter total SSB contribution (yearly): ",
-		func(value int) *string {
-
-			if value < 0 {
-
-				errMessage := "❌ Yearly SSB contribution cannot be negative."
-				return &errMessage
-			}
-			return nil
-		},
-	)
-
-	output, err := pitcalc.CalculatePIT(
-		pitcalc.CalculatePITInput{
-			MonthlyIncome:    float64(monthlyIncome),
-			StartingMonth:    startingMonth,
-			DependentParents: dependentParents,
-			DependentSpouse:  dependentSpouse,
-			Childrens:        childrens,
-			SSB:              float64(ssb),
-		})
+	value, err := strconv.ParseFloat(clean, 64)
 	if err != nil {
 
-		fmt.Printf("Error in calculating PIT: %v\n", err)
+		return nil, errors.New("invalid numeric format")
 	}
-	fmt.Println("=====================================")
-	fmt.Printf(
-		"Total Taxable Income: %s\n", currencyFormat(output.TotalTexable))
-	fmt.Printf("Total Reliefs: %s\n", currencyFormat(output.TotalRelief))
-	fmt.Printf("Total Personal Income Tax: %s\n", currencyFormat(output.TotalTax))
-	sort.Slice(output.TaxBreakdown, func(i, j int) bool {
 
-		return output.TaxBreakdown[i].Start < output.TaxBreakdown[j].Start
-	})
-	for _, v := range output.TaxBreakdown {
-
-		if v.Limit == math.Inf(1) {
-
-			fmt.Printf(
-				"  Above from %s: %s\n",
-				currencyFormat(v.Start),
-				currencyFormat(v.Amount))
-		} else {
-
-			fmt.Printf(
-				"  Up to %s: %s\n",
-				currencyFormat(v.Limit),
-				currencyFormat(v.Amount))
-		}
-	}
-	fmt.Println("=====================================")
+	return &value, nil
 }
 
-func inputInt(prompt string, validate func(int) *string) int64 {
-
-	errMessage := "❌ Invalid input, try again."
-
-	reader := bufio.NewReader(os.Stdin)
-	for {
-
-		fmt.Print(prompt)
-		text, _ := reader.ReadString('\n')
-		value, err := strconv.Atoi(strings.TrimSpace(text))
-		validationErrMessage := validate(value)
-		if err == nil && validationErrMessage == nil {
-
-			return int64(value)
-		} else if validationErrMessage != nil {
-
-			errMessage = *validationErrMessage
-		}
-		fmt.Println(errMessage)
-	}
+func (m model) Init() tea.Cmd {
+	return textinput.Blink
 }
 
-func currencyFormat(amount float64) string {
+func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
-	return message.NewPrinter(language.English).Sprintf("%.2f MMK", amount)
+	switch msg := msg.(type) {
+
+	case tea.KeyMsg:
+
+		switch msg.Type {
+
+		case tea.KeyEnter:
+
+			switch m.step {
+
+			case stepMonthlyIncome:
+
+				var errMessage string
+				v, err := parseNumericInput(m.monthlyIncomeInput.Value())
+				if err != nil {
+
+					errMessage = "❌ Invalid input, try again."
+				} else if v == nil || *v <= 0 {
+
+					errMessage = "❌ Monthly income must be greater than 0."
+				}
+				if errMessage != "" {
+
+					m.errMessage = &errMessage
+					return m, nil
+				}
+
+				m.step = stepConfirm
+				m.monthlyIncome = *v
+				m.errMessage = nil
+			case stepConfirm:
+
+				return m, tea.Quit
+			}
+		case tea.KeyCtrlC, tea.KeyEsc:
+
+			return m, tea.Quit
+		}
+	}
+
+	var cmd tea.Cmd
+	switch m.step {
+
+	case stepMonthlyIncome:
+
+		m.monthlyIncomeInput, cmd = m.monthlyIncomeInput.Update(msg)
+	}
+
+	return m, cmd
+}
+
+func (m model) View() string {
+	var b strings.Builder
+
+	switch m.step {
+	case stepMonthlyIncome:
+		b.WriteString("Step 1: Enter monthly income (MMK):\n")
+		b.WriteString(m.monthlyIncomeInput.View())
+	case stepConfirm:
+		b.WriteString("Final Step: Confirm your information\n\n")
+		b.WriteString(fmt.Sprintf("Monthly Income: %.2f MMK\n", m.monthlyIncome))
+		b.WriteString("\nPress ENTER to confirm or ESC to quit.")
+	}
+
+	if m.errMessage != nil {
+		b.WriteString("\n\n" + *m.errMessage)
+	}
+
+	return b.String()
 }
