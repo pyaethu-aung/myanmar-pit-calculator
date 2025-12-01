@@ -23,24 +23,27 @@ const (
 	stepStartingMonth
 	stepDependentParents
 	stepDependentSpouse
+	stepDependentChildrens
 	stepConfirm
 )
 
 type model struct {
-	step                  step
-	monthlyIncomeInput    textinput.Model
-	startingMonthInput    list.Model
-	dependentParentsInput list.Model
-	dependentSpouseInput  list.Model
+	step                    step
+	monthlyIncomeInput      textinput.Model
+	startingMonthInput      list.Model
+	dependentParentsInput   list.Model
+	dependentSpouseInput    list.Model
+	dependentChildrensInput textinput.Model
 
 	startingMonthList    []string
 	dependentParentsList []string
 	dependentSpouseList  []string
 
-	monthlyIncome    float64
-	startingMonth    int64
-	dependentParents int64
-	dependentSpouse  int64
+	monthlyIncome      float64
+	startingMonth      int64
+	dependentParents   int64
+	dependentSpouse    int64
+	dependentChildrens int64
 
 	errMessage *string
 }
@@ -57,10 +60,11 @@ func main() {
 	m := final.(model)
 
 	fmt.Println("========== RESULTS ==========")
-	fmt.Println("Monthly Income:	", currencyFormat(m.monthlyIncome))
-	fmt.Println("Starting Month:	", m.startingMonth)
-	fmt.Println("Dependent Parents:	", m.dependentParents)
-	fmt.Println("Dependent Spouse:	", m.dependentSpouse)
+	fmt.Println("Monthly Income:		", currencyFormat(m.monthlyIncome))
+	fmt.Println("Starting Month:		", m.startingMonth)
+	fmt.Println("Dependent Parents:		", m.dependentParents)
+	fmt.Println("Dependent Spouse:		", m.dependentSpouse)
+	fmt.Println("Dependent Childrens:	", m.dependentChildrens)
 	fmt.Println("=============================")
 }
 
@@ -129,13 +133,19 @@ func initialModel() model {
 	dependentSpouseInput.SetFilteringEnabled(false)
 	dependentSpouseInput.Select(0)
 
+	dependentChildrensInput := textinput.New()
+	dependentChildrensInput.Placeholder = "0"
+	dependentChildrensInput.Width = 20
+	dependentChildrensInput.Focus()
+
 	return model{
 
-		step:                  stepMonthlyIncome,
-		monthlyIncomeInput:    monthlyIncomeInput,
-		startingMonthInput:    startingMonthInput,
-		dependentParentsInput: dependentParentsInput,
-		dependentSpouseInput:  dependentSpouseInput,
+		step:                    stepMonthlyIncome,
+		monthlyIncomeInput:      monthlyIncomeInput,
+		startingMonthInput:      startingMonthInput,
+		dependentParentsInput:   dependentParentsInput,
+		dependentSpouseInput:    dependentSpouseInput,
+		dependentChildrensInput: dependentChildrensInput,
 
 		startingMonthList:    startingMonthList,
 		dependentParentsList: dependentParentsList,
@@ -247,7 +257,27 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			case stepDependentSpouse:
 
 				m.dependentSpouse = int64(m.dependentSpouseInput.Index())
+				m.step = stepDependentChildrens
+			case stepDependentChildrens:
+
+				var errMessage string
+				v, err := parseNumericInput(m.dependentChildrensInput.Value())
+				if err != nil {
+
+					errMessage = "❌ Invalid input, try again."
+				} else if v == nil || *v < 0 {
+
+					errMessage = "❌ Number of dependent childrens cannot be negative."
+				}
+				if errMessage != "" {
+
+					m.errMessage = &errMessage
+					return m, nil
+				}
+
 				m.step = stepConfirm
+				m.dependentChildrens = int64(*v)
+				m.errMessage = nil
 			case stepConfirm:
 
 				return m, tea.Quit
@@ -273,6 +303,9 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	case stepDependentSpouse:
 
 		m.dependentSpouseInput, cmd = m.dependentSpouseInput.Update(msg)
+	case stepDependentChildrens:
+
+		m.dependentChildrensInput, cmd = m.dependentChildrensInput.Update(msg)
 	}
 
 	return m, cmd
@@ -294,6 +327,9 @@ func (m model) View() string {
 	case stepDependentSpouse:
 		b.WriteString("Step 4: Select dependent spouse status:\n\n")
 		b.WriteString(m.dependentSpouseInput.View())
+	case stepDependentChildrens:
+		b.WriteString("Step 5: Enter number of children (500,000 MMK for each):\n")
+		b.WriteString(m.dependentChildrensInput.View())
 	case stepConfirm:
 		b.WriteString("Final Step: Confirm your information\n\n")
 		b.WriteString(
@@ -311,6 +347,10 @@ func (m model) View() string {
 			fmt.Sprintf(
 				"Dependent Spouse: %s\n",
 				m.dependentSpouseList[m.dependentSpouse]))
+		b.WriteString(
+			fmt.Sprintf(
+				"Number of Children: %d\n",
+				m.dependentChildrens))
 		b.WriteString("\nPress ENTER to confirm or ESC to quit.")
 	}
 
