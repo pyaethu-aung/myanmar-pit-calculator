@@ -22,6 +22,7 @@ const (
 	stepMonthlyIncome step = iota
 	stepStartingMonth
 	stepDependentParents
+	stepDependentSpouse
 	stepConfirm
 )
 
@@ -30,13 +31,16 @@ type model struct {
 	monthlyIncomeInput    textinput.Model
 	startingMonthInput    list.Model
 	dependentParentsInput list.Model
+	dependentSpouseInput  list.Model
 
 	startingMonthList    []string
 	dependentParentsList []string
+	dependentSpouseList  []string
 
 	monthlyIncome    float64
 	startingMonth    int64
 	dependentParents int64
+	dependentSpouse  int64
 
 	errMessage *string
 }
@@ -54,8 +58,9 @@ func main() {
 
 	fmt.Println("========== RESULTS ==========")
 	fmt.Println("Monthly Income:	", currencyFormat(m.monthlyIncome))
-	fmt.Println("Starting Month:	", m.startingMonthList[m.startingMonth-1])
+	fmt.Println("Starting Month:	", m.startingMonth)
 	fmt.Println("Dependent Parents:	", m.dependentParents)
+	fmt.Println("Dependent Spouse:	", m.dependentSpouse)
 	fmt.Println("=============================")
 }
 
@@ -79,6 +84,10 @@ func initialModel() model {
 		"No dependent parents",
 		"Only one dependent parent",
 		"Two dependent parents",
+	}
+	dependentSpouseList := []string{
+		"No dependent spouse",
+		"Has dependent spouse",
 	}
 
 	monthlyIncomeInput := textinput.New()
@@ -109,15 +118,28 @@ func initialModel() model {
 	dependentParentsInput.SetFilteringEnabled(false)
 	dependentParentsInput.Select(0)
 
+	dependentSpouseItemList := make([]list.Item, len(dependentSpouseList))
+	for i, v := range dependentSpouseList {
+		dependentSpouseItemList[i] = item(v)
+	}
+	dependentSpouseInput := list.New(
+		dependentSpouseItemList, itemDelegate{}, 10, 8)
+	dependentSpouseInput.SetShowTitle(false)
+	dependentSpouseInput.SetShowStatusBar(false)
+	dependentSpouseInput.SetFilteringEnabled(false)
+	dependentSpouseInput.Select(0)
+
 	return model{
 
 		step:                  stepMonthlyIncome,
 		monthlyIncomeInput:    monthlyIncomeInput,
 		startingMonthInput:    startingMonthInput,
 		dependentParentsInput: dependentParentsInput,
+		dependentSpouseInput:  dependentSpouseInput,
 
 		startingMonthList:    startingMonthList,
 		dependentParentsList: dependentParentsList,
+		dependentSpouseList:  dependentSpouseList,
 	}
 }
 
@@ -221,6 +243,10 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			case stepDependentParents:
 
 				m.dependentParents = int64(m.dependentParentsInput.Index())
+				m.step = stepDependentSpouse
+			case stepDependentSpouse:
+
+				m.dependentSpouse = int64(m.dependentSpouseInput.Index())
 				m.step = stepConfirm
 			case stepConfirm:
 
@@ -244,6 +270,9 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	case stepDependentParents:
 
 		m.dependentParentsInput, cmd = m.dependentParentsInput.Update(msg)
+	case stepDependentSpouse:
+
+		m.dependentSpouseInput, cmd = m.dependentSpouseInput.Update(msg)
 	}
 
 	return m, cmd
@@ -262,6 +291,9 @@ func (m model) View() string {
 	case stepDependentParents:
 		b.WriteString("Step 3: Select number of dependent parents:\n\n")
 		b.WriteString(m.dependentParentsInput.View())
+	case stepDependentSpouse:
+		b.WriteString("Step 4: Select dependent spouse status:\n\n")
+		b.WriteString(m.dependentSpouseInput.View())
 	case stepConfirm:
 		b.WriteString("Final Step: Confirm your information\n\n")
 		b.WriteString(
@@ -275,6 +307,10 @@ func (m model) View() string {
 			fmt.Sprintf(
 				"Dependent Parents: %s\n",
 				m.dependentParentsList[m.dependentParents]))
+		b.WriteString(
+			fmt.Sprintf(
+				"Dependent Spouse: %s\n",
+				m.dependentSpouseList[m.dependentSpouse]))
 		b.WriteString("\nPress ENTER to confirm or ESC to quit.")
 	}
 
