@@ -24,26 +24,29 @@ const (
 	stepDependentParents
 	stepDependentSpouse
 	stepDependentChildrens
+	stepTotalSSBContribution
 	stepConfirm
 )
 
 type model struct {
-	step                    step
-	monthlyIncomeInput      textinput.Model
-	startingMonthInput      list.Model
-	dependentParentsInput   list.Model
-	dependentSpouseInput    list.Model
-	dependentChildrensInput textinput.Model
+	step                      step
+	monthlyIncomeInput        textinput.Model
+	startingMonthInput        list.Model
+	dependentParentsInput     list.Model
+	dependentSpouseInput      list.Model
+	dependentChildrensInput   textinput.Model
+	totalSSBContributionInput textinput.Model
 
 	startingMonthList    []string
 	dependentParentsList []string
 	dependentSpouseList  []string
 
-	monthlyIncome      float64
-	startingMonth      int64
-	dependentParents   int64
-	dependentSpouse    int64
-	dependentChildrens int64
+	monthlyIncome        float64
+	startingMonth        int64
+	dependentParents     int64
+	dependentSpouse      int64
+	dependentChildrens   int64
+	totalSSBContribution float64
 
 	errMessage *string
 }
@@ -65,6 +68,7 @@ func main() {
 	fmt.Println("Dependent Parents:		", m.dependentParents)
 	fmt.Println("Dependent Spouse:		", m.dependentSpouse)
 	fmt.Println("Dependent Childrens:	", m.dependentChildrens)
+	fmt.Println("Total SSB Contribution:	", currencyFormat(m.totalSSBContribution))
 	fmt.Println("=============================")
 }
 
@@ -138,14 +142,20 @@ func initialModel() model {
 	dependentChildrensInput.Width = 20
 	dependentChildrensInput.Focus()
 
+	totalSSBContributionInput := textinput.New()
+	totalSSBContributionInput.Placeholder = "72000"
+	totalSSBContributionInput.Width = 20
+	totalSSBContributionInput.Focus()
+
 	return model{
 
-		step:                    stepMonthlyIncome,
-		monthlyIncomeInput:      monthlyIncomeInput,
-		startingMonthInput:      startingMonthInput,
-		dependentParentsInput:   dependentParentsInput,
-		dependentSpouseInput:    dependentSpouseInput,
-		dependentChildrensInput: dependentChildrensInput,
+		step:                      stepMonthlyIncome,
+		monthlyIncomeInput:        monthlyIncomeInput,
+		startingMonthInput:        startingMonthInput,
+		dependentParentsInput:     dependentParentsInput,
+		dependentSpouseInput:      dependentSpouseInput,
+		dependentChildrensInput:   dependentChildrensInput,
+		totalSSBContributionInput: totalSSBContributionInput,
 
 		startingMonthList:    startingMonthList,
 		dependentParentsList: dependentParentsList,
@@ -275,8 +285,28 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 					return m, nil
 				}
 
-				m.step = stepConfirm
+				m.step = stepTotalSSBContribution
 				m.dependentChildrens = int64(*v)
+				m.errMessage = nil
+			case stepTotalSSBContribution:
+
+				var errMessage string
+				v, err := parseNumericInput(m.totalSSBContributionInput.Value())
+				if err != nil {
+
+					errMessage = "❌ Invalid input, try again."
+				} else if v == nil || *v < 0 {
+
+					errMessage = "❌ Total SSB contribution cannot be negative."
+				}
+				if errMessage != "" {
+
+					m.errMessage = &errMessage
+					return m, nil
+				}
+
+				m.step = stepConfirm
+				m.totalSSBContribution = *v
 				m.errMessage = nil
 			case stepConfirm:
 
@@ -306,6 +336,9 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	case stepDependentChildrens:
 
 		m.dependentChildrensInput, cmd = m.dependentChildrensInput.Update(msg)
+	case stepTotalSSBContribution:
+
+		m.totalSSBContributionInput, cmd = m.totalSSBContributionInput.Update(msg)
 	}
 
 	return m, cmd
@@ -330,6 +363,9 @@ func (m model) View() string {
 	case stepDependentChildrens:
 		b.WriteString("Step 5: Enter number of children (500,000 MMK for each):\n")
 		b.WriteString(m.dependentChildrensInput.View())
+	case stepTotalSSBContribution:
+		b.WriteString("Step 6: Enter total SSB contribution yearly (MMK):\n")
+		b.WriteString(m.totalSSBContributionInput.View())
 	case stepConfirm:
 		b.WriteString("Final Step: Confirm your information\n\n")
 		b.WriteString(
@@ -351,6 +387,10 @@ func (m model) View() string {
 			fmt.Sprintf(
 				"Number of Children: %d\n",
 				m.dependentChildrens))
+		b.WriteString(
+			fmt.Sprintf(
+				"Total SSB Contribution: %s\n",
+				currencyFormat(m.totalSSBContribution)))
 		b.WriteString("\nPress ENTER to confirm or ESC to quit.")
 	}
 
