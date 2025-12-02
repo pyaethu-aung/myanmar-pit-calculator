@@ -1,10 +1,68 @@
 # Myanmar Personal Income Tax Calculator
 
-### Project layout (CLI)
-- `cmd/pitcalc/main.go`: CLI entrypoint
-- `pkg/pitcalc`: library with tax logic
-- `main.go`: ignored wrapper (contains //go:build ignore)
+## Project Layout
 
-### Run the CLI locally:
+- `cmd/pitcalc/main.go`: Standard CLI mode (non-interactive)
+- `cmd/pitcalc_bubbletea/main.go`: Interactive TUI mode with Bubble Tea
+- `pkg/pitcalc`: Shared tax calculation library
+- `main.go`: Ignored wrapper (contains `//go:build ignore`)
 
-	go run ./cmd/pitcalc
+## Running the Application
+
+You can run the calculator in two modes:
+
+### Mode 1: Standard CLI (Non-interactive)
+
+Run with simple input/output prompts:
+
+```bash
+make cli
+```
+
+Or directly:
+
+```bash
+go run ./cmd/pitcalc
+```
+
+### Mode 2: Interactive TUI (Bubble Tea)
+
+Run with an interactive terminal user interface:
+
+```bash
+make bubbletea
+```
+
+Or directly:
+
+```bash
+go run ./cmd/pitcalc_bubbletea
+```
+
+## Building Binaries
+
+Build both modes:
+
+```bash
+make build
+```
+
+This creates:
+- `bin/pitcalc` - Standard CLI binary
+- `bin/pitcalc-bubbletea` - Interactive TUI binary
+
+Build individual binaries:
+
+```bash
+make build-cli        # CLI only
+make build-bubbletea  # TUI only
+```
+
+## Available Make Commands
+
+- `make cli` - Run CLI mode
+- `make bubbletea` - Run interactive TUI mode
+- `make build` - Build both binaries
+- `make build-cli` - Build CLI binary only
+- `make build-bubbletea` - Build TUI binary only
+- `make help` - Show all available commands
