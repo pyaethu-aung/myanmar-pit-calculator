@@ -91,7 +91,7 @@ func main() {
 	)
 
 	ssb := inputInt(
-		"Enter total SSB contribution (yearly): ",
+		"Enter total SSB contribution yearly (MMK): ",
 		func(value int) *string {
 
 			if value < 0 {
