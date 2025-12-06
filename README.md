@@ -1,5 +1,7 @@
 # Myanmar Personal Income Tax Calculator
 
+[![codecov](https://codecov.io/gh/pyaethu-aung/myanmar-pit-calculator/graph/badge.svg)](https://codecov.io/gh/pyaethu-aung/myanmar-pit-calculator)
+
 ## Project Layout
 
 - `cmd/pitcalc/main.go`: Standard CLI mode (non-interactive)
