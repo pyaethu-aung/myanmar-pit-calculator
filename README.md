@@ -79,16 +79,31 @@ This generates a `coverage.out` file that shows code coverage metrics for all pa
 
 ## Continuous Integration
 
+### Unit Tests
+
 Unit tests are automatically run on GitHub Actions for:
 - **Push events** to `main` branch
 - **Pull requests** targeting the `main` branch
 
-The workflow:
+The test workflow:
 1. Sets up Go 1.25.2
 2. Runs all unit tests with `make test`
 3. Generates coverage report with `make test-coverage`
 
 You can view the workflow in `.github/workflows/test.yml`
+
+### Code Linting
+
+Code quality checks are automatically run on GitHub Actions for:
+- **Push events** to `main` branch
+- **Pull requests** targeting the `main` branch
+
+The lint workflow checks:
+1. **Code formatting** - Ensures code follows Go style guide (`go fmt`)
+2. **Code analysis** - Detects potential issues (`go vet`)
+3. **Dependencies** - Verifies `go.mod` and `go.sum` are tidy (`go mod tidy`)
+
+You can view the workflow in `.github/workflows/lint.yml`
 
 ## Branch Naming Convention
 
