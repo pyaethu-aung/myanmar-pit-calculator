@@ -77,6 +77,19 @@ This generates a `coverage.out` file that shows code coverage metrics for all pa
 - `cmd/pitcalc` - Standard CLI mode
 - `cmd/pitcalc_bubbletea` - Interactive TUI mode
 
+## Continuous Integration
+
+Unit tests are automatically run on GitHub Actions for:
+- **Push events** to `main` branch
+- **Pull requests** targeting the `main` branch
+
+The workflow:
+1. Sets up Go 1.25.2
+2. Runs all unit tests with `make test`
+3. Generates coverage report with `make test-coverage`
+
+You can view the workflow in `.github/workflows/test.yml`
+
 ## Available Make Commands
 
 - `make cli` - Run CLI mode
