@@ -90,6 +90,22 @@ The workflow:
 
 You can view the workflow in `.github/workflows/test.yml`
 
+## Branch Naming Convention
+
+Branch names must follow one of these prefixes for pull requests:
+
+- **`feature/`** - New features (e.g., `feature/add-tax-brackets`)
+- **`bugfix/`** - Bug fixes (e.g., `bugfix/fix-tax-calculation`)
+- **`hotfix/`** - Hotfixes for production (e.g., `hotfix/critical-bug`)
+- **`refactor/`** - Code refactoring (e.g., `refactor/improve-performance`)
+- **`docs/`** - Documentation updates (e.g., `docs/update-readme`)
+- **`test/`** - Test additions (e.g., `test/add-unit-tests`)
+- **`ci/`** - CI/CD updates (e.g., `ci/add-github-actions`)
+
+Use lowercase letters, numbers, hyphens, and underscores in branch names.
+
+The branch naming convention is enforced by GitHub Actions (`.github/workflows/branch-name-check.yml`).
+
 ## Available Make Commands
 
 - `make cli` - Run CLI mode
