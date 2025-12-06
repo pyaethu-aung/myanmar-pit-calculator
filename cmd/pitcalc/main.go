@@ -22,85 +22,32 @@ func main() {
 
 	monthlyIncome := inputInt(
 		"Enter monthly income (MMK): ",
-		func(value int) *string {
-
-			if value <= 0 {
-
-				errMessage := "❌ Monthly income must be greater than 0."
-				return &errMessage
-			}
-			return nil
-		},
+		validateMonthlyIncome,
 	)
 
 	startingMonth := inputInt(
 		"Enter starting month (1 = Jan, 2 = Feb, ..., 12 = Dec): ",
-		func(value int) *string {
-
-			if value < 1 || value > 12 {
-
-				errMessage := "❌ Starting month must be between 1 and 12."
-				return &errMessage
-			}
-			return nil
-		},
+		validateStartingMonth,
 	)
 
 	dependentParents := inputInt(
 		"Enter number of dependent parents (1,000,000 MMK for each): ",
-		func(value int) *string {
-
-			if value < 0 {
-
-				errMessage := "❌ Number of dependent parents cannot be negative."
-				return &errMessage
-			}
-			if value > 2 {
-
-				errMessage := "❌ Number of dependent parents cannot exceed 2."
-				return &errMessage
-			}
-			return nil
-		},
+		validateDependentParents,
 	)
 
 	dependentSpouse := inputInt(
 		"Do you have a dependent spouse? (1 = Yes, 0 = No): ",
-		func(value int) *string {
-
-			if value != 0 && value != 1 {
-
-				errMessage := "❌ Invalid input. Please enter 1 for Yes or 0 for No."
-				return &errMessage
-			}
-			return nil
-		},
+		validateDependentSpouse,
 	)
 
 	childrens := inputInt(
 		"Enter number of children (500,000 MMK for each): ",
-		func(value int) *string {
-
-			if value < 0 {
-
-				errMessage := "❌ Number of children cannot be negative."
-				return &errMessage
-			}
-			return nil
-		},
+		validateChildrens,
 	)
 
 	ssb := inputInt(
 		"Enter total SSB contribution yearly (MMK): ",
-		func(value int) *string {
-
-			if value < 0 {
-
-				errMessage := "❌ Yearly SSB contribution cannot be negative."
-				return &errMessage
-			}
-			return nil
-		},
+		validateSSB,
 	)
 
 	output, err := pitcalc.CalculatePIT(
@@ -169,4 +116,56 @@ func inputInt(prompt string, validate func(int) *string) int64 {
 func currencyFormat(amount float64) string {
 
 	return message.NewPrinter(language.English).Sprintf("%.2f MMK", amount)
+}
+
+func validateMonthlyIncome(value int) *string {
+	if value <= 0 {
+		errMessage := "❌ Monthly income must be greater than 0."
+		return &errMessage
+	}
+	return nil
+}
+
+func validateStartingMonth(value int) *string {
+	if value < 1 || value > 12 {
+		errMessage := "❌ Starting month must be between 1 and 12."
+		return &errMessage
+	}
+	return nil
+}
+
+func validateDependentParents(value int) *string {
+	if value < 0 {
+		errMessage := "❌ Number of dependent parents cannot be negative."
+		return &errMessage
+	}
+	if value > 2 {
+		errMessage := "❌ Number of dependent parents cannot exceed 2."
+		return &errMessage
+	}
+	return nil
+}
+
+func validateDependentSpouse(value int) *string {
+	if value != 0 && value != 1 {
+		errMessage := "❌ Invalid input. Please enter 1 for Yes or 0 for No."
+		return &errMessage
+	}
+	return nil
+}
+
+func validateChildrens(value int) *string {
+	if value < 0 {
+		errMessage := "❌ Number of children cannot be negative."
+		return &errMessage
+	}
+	return nil
+}
+
+func validateSSB(value int) *string {
+	if value < 0 {
+		errMessage := "❌ Yearly SSB contribution cannot be negative."
+		return &errMessage
+	}
+	return nil
 }

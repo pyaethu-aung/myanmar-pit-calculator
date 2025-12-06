@@ -58,6 +58,25 @@ make build-cli        # CLI only
 make build-bubbletea  # TUI only
 ```
 
+## Testing
+
+Run unit tests:
+
+```bash
+make test
+```
+
+Run tests with coverage report:
+
+```bash
+make test-coverage
+```
+
+This generates a `coverage.out` file that shows code coverage metrics for all packages:
+- `pkg/pitcalc` - Tax calculation library
+- `cmd/pitcalc` - Standard CLI mode
+- `cmd/pitcalc_bubbletea` - Interactive TUI mode
+
 ## Available Make Commands
 
 - `make cli` - Run CLI mode
@@ -65,4 +84,7 @@ make build-bubbletea  # TUI only
 - `make build` - Build both binaries
 - `make build-cli` - Build CLI binary only
 - `make build-bubbletea` - Build TUI binary only
+- `make test` - Run all unit tests
+- `make test-coverage` - Run tests with code coverage report
+- `make clean` - Clean up built binaries and coverage files
 - `make help` - Show all available commands
