@@ -105,6 +105,24 @@ The lint workflow checks:
 
 You can view the workflow in `.github/workflows/lint.yml`
 
+### Dependency Updates
+
+Dependabot automatically checks for outdated dependencies and creates pull requests with updates:
+
+**Go Module Dependencies**
+- Checks weekly on Friday at 11:30 UTC
+- Creates PRs for new versions of Go dependencies
+- Limited to 5 open PRs at a time
+- Labeled with `dependencies` and `go`
+
+**GitHub Actions**
+- Checks weekly on Friday at 12:30 UTC
+- Creates PRs for new versions of GitHub Actions
+- Limited to 5 open PRs at a time
+- Labeled with `dependencies` and `ci`
+
+You can view the configuration in `.github/dependabot.yml`
+
 ## Branch Naming Convention
 
 Branch names must follow one of these prefixes for pull requests:
