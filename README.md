@@ -1,6 +1,9 @@
 # Myanmar Personal Income Tax Calculator
 
 [![codecov](https://codecov.io/gh/pyaethu-aung/myanmar-pit-calculator/graph/badge.svg)](https://codecov.io/gh/pyaethu-aung/myanmar-pit-calculator)
+![License](https://img.shields.io/github/license/pyaethu-aung/myanmar-pit-calculator)
+![Go Version](https://img.shields.io/github/go-mod/go-version/pyaethu-aung/myanmar-pit-calculator)
+![Build Status](https://img.shields.io/github/actions/workflow/status/pyaethu-aung/myanmar-pit-calculator/test.yml?branch=main)
 
 ## Project Layout
 
