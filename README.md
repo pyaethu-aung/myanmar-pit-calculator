@@ -2,6 +2,7 @@
 
 [![codecov](https://codecov.io/gh/pyaethu-aung/myanmar-pit-calculator/graph/badge.svg)](https://codecov.io/gh/pyaethu-aung/myanmar-pit-calculator)
 ![License](https://img.shields.io/github/license/pyaethu-aung/myanmar-pit-calculator)
+![Go Version](https://img.shields.io/github/go-mod/go-version/pyaethu-aung/myanmar-pit-calculator)
 
 ## Project Layout
 
