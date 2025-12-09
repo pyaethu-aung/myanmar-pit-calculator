@@ -8,6 +8,7 @@ on:
             - "pkg/**"
             - "go.mod"
             - "go.sum"
+            - ".github/workflows/security.yml"
     pull_request:
         branches: [main]
         paths:
@@ -15,12 +16,16 @@ on:
             - "pkg/**"
             - "go.mod"
             - "go.sum"
+            - ".github/workflows/security.yml"
     schedule:
         - cron: "0 2 * * 0"
 
 jobs:
     trivy:
         runs-on: ubuntu-latest
+        permissions:
+            contents: read
+            security-events: write
 
         steps:
             - uses: actions/checkout@v4
