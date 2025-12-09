@@ -3,8 +3,20 @@ name: Unit Tests
 on:
     push:
         branches: [main]
+        paths:
+            - "cmd/**"
+            - "pkg/**"
+            - "go.mod"
+            - "go.sum"
+            - "Makefile"
     pull_request:
         branches: [main]
+        paths:
+            - "cmd/**"
+            - "pkg/**"
+            - "go.mod"
+            - "go.sum"
+            - "Makefile"
 
 jobs:
     test:
