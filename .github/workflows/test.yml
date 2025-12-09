@@ -1,44 +1,44 @@
 name: Unit Tests
 
 on:
-    push:
-        branches: [main]
-        paths:
-            - "cmd/**"
-            - "pkg/**"
-            - "go.mod"
-            - "go.sum"
-            - "Makefile"
-    pull_request:
-        branches: [main]
-        paths:
-            - "cmd/**"
-            - "pkg/**"
-            - "go.mod"
-            - "go.sum"
-            - "Makefile"
+  push:
+    branches: [main]
+    paths:
+      - "cmd/**"
+      - "pkg/**"
+      - "go.mod"
+      - "go.sum"
+      - "Makefile"
+  pull_request:
+    branches: [main]
+    paths:
+      - "cmd/**"
+      - "pkg/**"
+      - "go.mod"
+      - "go.sum"
+      - "Makefile"
 
 jobs:
-    test:
-        runs-on: ubuntu-latest
+  test:
+    runs-on: ubuntu-latest
 
-        steps:
-            - uses: actions/checkout@v6
+    steps:
+      - uses: actions/checkout@v6
 
-            - name: Set up Go
-              uses: actions/setup-go@v6
-              with:
-                  go-version: 1.25.2
+      - name: Set up Go
+        uses: actions/setup-go@v6
+        with:
+          go-version: 1.25.5
 
-            - name: Run unit tests
-              run: make test
+      - name: Run unit tests
+        run: make test
 
-            - name: Run tests with coverage
-              run: make test-coverage
+      - name: Run tests with coverage
+        run: make test-coverage
 
-            - name: Upload coverage to Codecov
-              uses: codecov/codecov-action@v4
-              with:
-                  files: ./coverage.out
-                  flags: unittests
-                  fail_ci_if_error: false
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          files: ./coverage.out
+          flags: unittests
+          fail_ci_if_error: false
