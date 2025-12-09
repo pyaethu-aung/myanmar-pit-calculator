@@ -4,6 +4,7 @@
 ![Go Version](https://img.shields.io/github/go-mod/go-version/pyaethu-aung/myanmar-pit-calculator)
 ![Build Status](https://img.shields.io/github/actions/workflow/status/pyaethu-aung/myanmar-pit-calculator/test.yml?branch=main)
 ![Lint Status](https://img.shields.io/github/actions/workflow/status/pyaethu-aung/myanmar-pit-calculator/lint.yml?branch=main&label=lint)
+![Security Status](https://img.shields.io/github/actions/workflow/status/pyaethu-aung/myanmar-pit-calculator/security.yml?branch=main&label=security)
 ![License](https://img.shields.io/github/license/pyaethu-aung/myanmar-pit-calculator)
 
 ## Project Layout
