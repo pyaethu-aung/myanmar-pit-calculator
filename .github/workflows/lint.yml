@@ -62,7 +62,7 @@ jobs:
       - name: Check for imports
         run: |
           go mod tidy
-          if [ -n "$(git diff --name-only)" ]; then
+          if [ -n "$(git diff --name-only go.mod go.sum)" ]; then
             echo "❌ go.mod/go.sum are not tidy. Run 'go mod tidy' to fix:"
             git diff
             exit 1
