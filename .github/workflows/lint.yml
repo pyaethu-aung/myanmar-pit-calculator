@@ -33,19 +33,23 @@ jobs:
         with:
           go-version: "1.25.5"
 
+      # Caching prevents redownloading dependencies on every run until
+      # go.mod/go.sum changes
       - name: Cache Go modules
         uses: actions/cache@v4
         with:
           path: |
-            ~/go/pkg/mod
-            ~/.cache/go-build
+            ~/go/pkg/mod # Go modules cache
+            ~/.cache/go-build # Go build cache
           key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
 
+      # Ensures gofmt sees only actual Go code that belongs to your module
       - name: Run go fmt
         run: |
-          if [ -n "$(gofmt -s -l .)" ]; then
-            echo "❌ Code formatting issues found. Run 'go fmt ./...' to fix:"
-            gofmt -s -d .
+          FILES=$(gofmt -s -l $(go list -f '{{.Dir}}' ./...))
+          if [ -n "$FILES" ]; then
+            echo "❌ Formatting issues found:"
+            echo "$FILES"
             exit 1
           fi
           echo "✅ Code formatting is correct"
