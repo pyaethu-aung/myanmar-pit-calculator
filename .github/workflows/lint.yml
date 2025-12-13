@@ -36,7 +36,7 @@ jobs:
       # Caching prevents redownloading dependencies on every run until
       # go.mod/go.sum changes
       - name: Cache Go modules
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: |
             ~/go/pkg/mod # Go modules cache
