@@ -4,13 +4,20 @@ on:
   pull_request:
     types: [opened, reopened, synchronize]
 
+permissions:
+  contents: read
+
 jobs:
   branch-name-check:
     runs-on: ubuntu-latest
+
     steps:
       - name: Check branch name format
+        shell: bash
         run: |
           BRANCH_NAME="${{ github.head_ref }}"
+
+          echo "🔍 Checking branch name: $BRANCH_NAME"
 
           # Allow main branch
           if [ "$BRANCH_NAME" = "main" ]; then
@@ -19,7 +26,7 @@ jobs:
           fi
 
           # Check for valid prefixes: feature/, bugfix/, hotfix/, refactor/, docs/, test/, ci/, chore/
-          if [[ $BRANCH_NAME =~ ^(feature|bugfix|hotfix|refactor|docs|test|ci|chore)\/[a-z0-9_-]+$ ]]; then
+          if [[ "$BRANCH_NAME" =~ ^(feature|bugfix|hotfix|refactor|docs|test|ci|chore)\/[a-z0-9._-]+$ ]]; then
             echo "✅ Branch name is valid: $BRANCH_NAME"
             exit 0
           fi
