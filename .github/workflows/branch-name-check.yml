@@ -25,8 +25,8 @@ jobs:
             exit 0
           fi
 
-          # Check for valid prefixes: feature/, bugfix/, hotfix/, refactor/, docs/, test/, ci/, chore/
-          if [[ "$BRANCH_NAME" =~ ^(feature|bugfix|hotfix|refactor|docs|test|ci|chore)\/[a-z0-9._-]+$ ]]; then
+          # Check for valid prefixes and allow optional parentheses
+          if [[ "$BRANCH_NAME" =~ ^(feature|bugfix|hotfix|refactor|docs|test|ci|chore)(\([a-z0-9._-]+\))?\/[a-z0-9._-]+$ ]]; then
             echo "✅ Branch name is valid: $BRANCH_NAME"
             exit 0
           fi
@@ -44,7 +44,7 @@ jobs:
           echo "  - chore/      (for chores and maintenance)"
           echo ""
           echo "Examples of valid branch names:"
-          echo "  - feature/add-pit-calculator"
+          echo "  - feature(caculation)/add-pit-calculator"
           echo "  - bugfix/fix-tax-calculation"
           echo "  - docs/update-readme"
           echo "  - ci/add-github-actions"
