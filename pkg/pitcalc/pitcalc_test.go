@@ -85,6 +85,76 @@ func TestCalculatePIT_InvalidStartingMonth(t *testing.T) {
 	}
 }
 
+func TestCalculatePIT_InvalidDependentsAndSSB(t *testing.T) {
+	tests := []struct {
+		name          string
+		input         CalculatePITInput
+		expectedError string
+	}{
+		{
+			name: "negative parents",
+			input: CalculatePITInput{
+				MonthlyIncome:    500000,
+				StartingMonth:    4,
+				DependentParents: -1,
+			},
+			expectedError: "number of dependent parents cannot be negative",
+		},
+		{
+			name: "too many parents",
+			input: CalculatePITInput{
+				MonthlyIncome:    500000,
+				StartingMonth:    4,
+				DependentParents: 3,
+			},
+			expectedError: "number of dependent parents cannot exceed 2",
+		},
+		{
+			name: "invalid spouse flag",
+			input: CalculatePITInput{
+				MonthlyIncome:   500000,
+				StartingMonth:   4,
+				DependentSpouse: 2,
+			},
+			expectedError: "dependent spouse value must be 0 or 1",
+		},
+		{
+			name: "negative children",
+			input: CalculatePITInput{
+				MonthlyIncome:   500000,
+				StartingMonth:   4,
+				Childrens:       -2,
+				DependentSpouse: 0,
+			},
+			expectedError: "number of children cannot be negative",
+		},
+		{
+			name: "negative ssb",
+			input: CalculatePITInput{
+				MonthlyIncome: 500000,
+				StartingMonth: 4,
+				SSB:           -500,
+			},
+			expectedError: "yearly SSB contribution cannot be negative",
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			result, err := CalculatePIT(tt.input)
+			if err == nil {
+				t.Fatalf("expected error, got nil")
+			}
+			if err.Error() != tt.expectedError {
+				t.Fatalf("expected error %q, got %q", tt.expectedError, err.Error())
+			}
+			if result != nil {
+				t.Fatalf("expected nil result, got %#v", result)
+			}
+		})
+	}
+}
+
 func TestCalculatePIT_NoTaxBelow2Million(t *testing.T) {
 	input := CalculatePITInput{
 		MonthlyIncome: 500000,
@@ -297,7 +367,8 @@ func TestCalculatePIT_NegativeTaxableIncomeBecomesZero(t *testing.T) {
 	input := CalculatePITInput{
 		MonthlyIncome:    100000,
 		StartingMonth:    4,
-		DependentParents: 10, // Very high relief
+		DependentParents: 2,
+		Childrens:        5,
 	}
 	result, err := CalculatePIT(input)
 	if err != nil {
