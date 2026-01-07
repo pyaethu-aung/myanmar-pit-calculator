@@ -48,6 +48,21 @@ func CalculatePIT(input CalculatePITInput) (*CalculatePITOutput, error) {
 	if input.StartingMonth < 1 || input.StartingMonth > 12 {
 		return nil, fmt.Errorf("starting month must be between 1 and 12")
 	}
+	if input.DependentParents < 0 {
+		return nil, fmt.Errorf("number of dependent parents cannot be negative")
+	}
+	if input.DependentParents > 2 {
+		return nil, fmt.Errorf("number of dependent parents cannot exceed 2")
+	}
+	if input.DependentSpouse < 0 || input.DependentSpouse > 1 {
+		return nil, fmt.Errorf("dependent spouse value must be 0 or 1")
+	}
+	if input.Childrens < 0 {
+		return nil, fmt.Errorf("number of children cannot be negative")
+	}
+	if input.SSB < 0 {
+		return nil, fmt.Errorf("yearly SSB contribution cannot be negative")
+	}
 
 	// Determine months in the budget year (April=4, ..., March=3)
 	var months int64
