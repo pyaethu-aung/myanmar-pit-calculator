@@ -143,13 +143,13 @@ func TestCalculatePIT_InvalidDependentsAndSSB(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			result, err := CalculatePIT(tt.input)
 			if err == nil {
-				t.Fatalf("expected error, got nil")
+				t.Errorf("expected error, got nil")
 			}
-			if err.Error() != tt.expectedError {
-				t.Fatalf("expected error %q, got %q", tt.expectedError, err.Error())
+			if err != nil && err.Error() != tt.expectedError {
+				t.Errorf("expected error %q, got %q", tt.expectedError, err.Error())
 			}
 			if result != nil {
-				t.Fatalf("expected nil result, got %#v", result)
+				t.Errorf("expected nil result, got %#v", result)
 			}
 		})
 	}
