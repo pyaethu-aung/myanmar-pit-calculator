@@ -16,3 +16,16 @@ Alternatives considered:
 
 ## Decision: Branding with `lipgloss`
 Rationale: `lipgloss` allows for sophisticated terminal styling (borders, colors, padding). A rounded border banner will be used for the title.
+
+## Decision: Localization Strategy
+Rationale: Since the requirement is bilingual (EN/MY) with English as default, we will implement a lightweight translation map or struct within `cmd/pitcalc_bubbletea`. This avoids heavy i18n frameworks while providing the necessary flexibility.
+
+## Decision: Clipboard Integration
+Rationale: We will use `github.com/atotto/clipboard` as it is the standard and most reliable library for cross-platform clipboard access in Go.
+
+## Decision: Export Functionality
+Rationale: After the calculation, we will provide a choice to export the result. 
+- **TXT**: Plain text with terminal-like structure.
+- **JSON**: Machine-readable format.
+- **CSV**: Structured data for spreadsheets.
+The user will select these via a `huh` menu after the summary screen.
