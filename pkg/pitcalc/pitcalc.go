@@ -32,9 +32,16 @@ type CalculatePITOutput struct {
 		Rate   float64
 		Amount float64
 	}
-	TotalRelief  float64
-	TotalTexable float64
-	TotalTax     float64
+	GrossIncome   float64
+	BasicRelief   float64
+	ParentRelief  float64
+	SpouseRelief  float64
+	ChildRelief   float64
+	SSBRelief     float64
+	
+	TotalRelief   float64
+	TotalTexable  float64
+	TotalTax      float64
 }
 
 // CalculatePIT computes personal income tax for Myanmar.
@@ -96,6 +103,12 @@ func CalculatePIT(input CalculatePITInput) (*CalculatePITOutput, error) {
 	}
 
 	output := CalculatePITOutput{
+		GrossIncome:  yearlyGrossIncome,
+		BasicRelief:  personalRelief,
+		ParentRelief: parentRelief,
+		SpouseRelief: spouseRelief,
+		ChildRelief:  childRelief,
+		SSBRelief:    input.SSB,
 		TotalRelief:  totalRelief,
 		TotalTexable: taxableIncome,
 	}

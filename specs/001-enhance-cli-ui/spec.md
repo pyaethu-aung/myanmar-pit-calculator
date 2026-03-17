@@ -25,6 +25,7 @@ The current CLI provides a functional step-by-step wizard but lacks modern termi
 ### 2. Summary Screen
 - Replace linear `fmt.Printf` blocks with structured `bubbles/table`.
 - Show Income and Reliefs side-by-side or clearly delineated.
+- Display detailed breakdowns of all user inputs (Gross Income, Basic Relief, Parents, Spouse, Children, SSB) instead of just total sums.
 - Include a formatted tax breakdown table (Limit vs. Amount).
 - Cohesive color scheme using soft colors.
 
