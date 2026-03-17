@@ -226,9 +226,6 @@ func initialModel() *model {
 	m := &model{
 		state:        stateLang,
 		selectedLang: langEN,
-		valSSB:       "72000",
-		valChildren:  "0",
-		valParents:   "0",
 		valExportFormat: "txt",
 	}
 
@@ -290,10 +287,12 @@ func (m *model) initTaxForm() {
 				Value(&m.valSpouse),
 			huh.NewInput().
 				Title(t(l, "children_prompt")).
+				Placeholder("0").
 				Validate(validateNumeric(l)).
 				Value(&m.valChildren),
 			huh.NewInput().
 				Title(t(l, "parents_prompt")).
+				Placeholder("0").
 				Validate(validateParents(l)).
 				Value(&m.valParents),
 		).Title(t(l, "reliefs_group")),
