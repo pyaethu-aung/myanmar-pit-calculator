@@ -92,10 +92,10 @@
 
 **Purpose**: Improvements that affect multiple user stories
 
-- [ ] T021 [P] Ensure responsive layouts handle terminal window resizing in `cmd/pitcalc_bubbletea/main.go`
-- [ ] T022 [P] Final audit of Burmese translations across all groups in `cmd/pitcalc_bubbletea/main.go`
-- [ ] T023 Code cleanup, removing old `model.step` logic in `cmd/pitcalc_bubbletea/main.go`
-- [ ] T024 Perform final manual verification of all features together
+- [x] T021 [P] Ensure responsive layouts handle terminal window resizing in `cmd/pitcalc_bubbletea/main.go`
+- [x] T022 [P] Final audit of Burmese translations across all groups in `cmd/pitcalc_bubbletea/main.go`
+- [x] T023 Code cleanup, removing old `model.step` logic in `cmd/pitcalc_bubbletea/main.go`
+- [x] T024 Perform final manual verification of all features together
 
 ---
 
