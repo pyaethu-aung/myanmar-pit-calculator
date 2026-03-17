@@ -4,7 +4,7 @@
 **Input**: Feature specification from `/specs/001-enhance-cli-ui/spec.md`
 
 ## Summary
-The goal is to modernize the Myanmar PIT Calculator's CLI by replacing the manual state management for data collection with `charmbracelet/huh`. This will provide a more polished, form-based input experience organized into logical groups. Additionally, the CLI will support bilingual (English/Burmese) localization, "Copy to Clipboard" functionality using `atotto/clipboard`, and multi-format data export (TXT, JSON, CSV). The results summary will be restructured using `bubbles/table` and styled with `lipgloss` to provide a premium, readable breakdown of tax calculations.
+The goal is to modernize the Myanmar PIT Calculator's CLI by replacing the manual state management for data collection with `charmbracelet/huh`. This will provide a more polished, form-based input experience organized into logical groups. Additionally, the CLI will support bilingual (English/Burmese) localization, "Copy to Clipboard" functionality using `atotto/clipboard`, and multi-format data export (TXT, JSON, CSV). The results summary will be restructured using `bubbles/table` and styled with `lipgloss` to provide a premium, readable breakdown of tax calculations and detailed breakdowns of user inputs and reliefs.
 
 ## Technical Context
 
@@ -22,9 +22,10 @@ The goal is to modernize the Myanmar PIT Calculator's CLI by replacing the manua
 
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
-- [x] Principle: Library-First (Logic is in `pkg/pitcalc`)
-- [x] Principle: CLI Interface (This feature enhances the primary interface)
-- [x] Principle: Test-First (Logic already tested; UI tests are manual/interactive)
+- [x] Principle I (Core Logic Isolation): Logic remains in `pkg/pitcalc`, UI updates strictly in `cmd/pitcalc_bubbletea`
+- [x] Principle II (State Management & Aesthetics): Uses `charmbracelet/huh` and `lipgloss`
+- [x] Principle V (Test Coverage & Quality Gates): UI tests will be manual/interactive as dictated by tasks.md
+- [x] Principle VII (Export & Clipboard Hygiene): Uses `atotto/clipboard` correctly
 
 ## Project Structure
 

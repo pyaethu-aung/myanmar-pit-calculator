@@ -88,6 +88,12 @@ var trans = map[langKey]map[string]string{
 		"success_copy":       "📋 Copied to clipboard!",
 		"success_export":     "📁 Exported to PIT_Report.",
 		"help_footer":        "c: Copy to clipboard • e: Export file • q: Quit",
+		"res_gross_income":   "Gross Income (Yearly)",
+		"res_basic_relief":   "Basic (20%, max 10M)",
+		"res_parent_relief":  "Parents",
+		"res_spouse_relief":  "Spouse",
+		"res_child_relief":   "Children",
+		"res_ssb_relief":     "SSB",
 	},
 	langMY: {
 		"title":              "🇲🇲 မြန်မာ ဝင်ငွေခွန် တွက်စက်",
@@ -117,6 +123,12 @@ var trans = map[langKey]map[string]string{
 		"success_copy":       "📋 ကူးယူပြီးပါပြီ!",
 		"success_export":     "📁 PIT_Report သို့ မှတ်တမ်းတင်ပြီးပါပြီ။",
 		"help_footer":        "c: ကူးယူမည် • e: ဖိုင်ထုတ်မည် • q: ထွက်မည်",
+		"res_gross_income":   "နှစ်စဉ် စုစုပေါင်း ဝင်ငွေ",
+		"res_basic_relief":   "အခြေခံ (၂၀% အများဆုံး သိန်း ၁၀၀)",
+		"res_parent_relief":  "မိဘ",
+		"res_spouse_relief":  "အိမ်ထောင်ဖက်",
+		"res_child_relief":   "ကလေး",
+		"res_ssb_relief":     "လူမှုဖူလုံရေး",
 	},
 }
 
@@ -363,29 +375,33 @@ func buildResultView(m *model) string {
 	l := m.selectedLang
 
 	// Income Box
-	incomeText := fmt.Sprintf("%s\n%s: %s\n",
+	incomeText := fmt.Sprintf("%s\n%s: %s\n\n%s: %s\n",
 		successStyle.Render(t(l, "res_income")),
-		t(l, "res_total_income"),
-		currencyFormat(c.TotalTexable))
+		t(l, "res_gross_income"), currencyFormat(c.GrossIncome),
+		t(l, "res_total_income"), currencyFormat(c.TotalTexable))
 	
 	incomeBox := lipgloss.NewStyle().
 		Border(lipgloss.RoundedBorder()).
 		BorderForeground(themeBorder).
 		Padding(1, 2).
-		Width(38).
+		Width(48).
 		Render(incomeText)
 
 	// Reliefs Box
-	reliefsText := fmt.Sprintf("%s\n%s: %s\n",
+	reliefsText := fmt.Sprintf("%s\n%s: %s\n%s: %s\n%s: %s\n%s: %s\n%s: %s\n\n%s: %s\n",
 		successStyle.Render(t(l, "res_reliefs")),
-		t(l, "res_total_reliefs"),
-		currencyFormat(c.TotalRelief))
+		t(l, "res_basic_relief"), currencyFormat(c.BasicRelief),
+		t(l, "res_parent_relief"), currencyFormat(c.ParentRelief),
+		t(l, "res_spouse_relief"), currencyFormat(c.SpouseRelief),
+		t(l, "res_child_relief"), currencyFormat(c.ChildRelief),
+		t(l, "res_ssb_relief"), currencyFormat(c.SSBRelief),
+		t(l, "res_total_reliefs"), currencyFormat(c.TotalRelief))
 		
 	reliefsBox := lipgloss.NewStyle().
 		Border(lipgloss.RoundedBorder()).
 		BorderForeground(themeBorder).
 		Padding(1, 2).
-		Width(38).
+		Width(48).
 		Render(reliefsText)
 
 	topRow := lipgloss.JoinHorizontal(lipgloss.Top, incomeBox, "  ", reliefsBox)
@@ -411,9 +427,16 @@ func buildResultView(m *model) string {
 func generatePlainTextReport(c *pitcalc.CalculatePITOutput) string {
 	var b strings.Builder
 	b.WriteString("Myanmar PIT Calculator Report\n==============================\n")
-	b.WriteString(fmt.Sprintf("Total Taxable Income: %s\n", currencyFormat(c.TotalTexable)))
+	b.WriteString(fmt.Sprintf("Gross Income (Yearly): %s\n", currencyFormat(c.GrossIncome)))
+	b.WriteString("\nReliefs Breakdown:\n")
+	b.WriteString(fmt.Sprintf("  Basic (20%%, max 10M): %s\n", currencyFormat(c.BasicRelief)))
+	b.WriteString(fmt.Sprintf("  Parents: %s\n", currencyFormat(c.ParentRelief)))
+	b.WriteString(fmt.Sprintf("  Spouse: %s\n", currencyFormat(c.SpouseRelief)))
+	b.WriteString(fmt.Sprintf("  Children: %s\n", currencyFormat(c.ChildRelief)))
+	b.WriteString(fmt.Sprintf("  SSB: %s\n", currencyFormat(c.SSBRelief)))
+	b.WriteString(fmt.Sprintf("\nTotal Taxable Income: %s\n", currencyFormat(c.TotalTexable)))
 	b.WriteString(fmt.Sprintf("Total Reliefs: %s\n", currencyFormat(c.TotalRelief)))
-	b.WriteString(fmt.Sprintf("TOTAL TAX: %s\n\n", currencyFormat(c.TotalTax)))
+	b.WriteString(fmt.Sprintf("\nTOTAL TAX: %s\n\n", currencyFormat(c.TotalTax)))
 	
 	b.WriteString("Tax Breakdown:\n")
 	for _, v := range c.TaxBreakdown {
@@ -443,6 +466,12 @@ func exportToFile(format string, c *pitcalc.CalculatePITOutput) error {
 		
 		w := csv.NewWriter(f)
 		w.Write([]string{"Metric", "Value (MMK)"})
+		w.Write([]string{"Gross Income (Yearly)", fmt.Sprintf("%.2f", c.GrossIncome)})
+		w.Write([]string{"Basic Relief", fmt.Sprintf("%.2f", c.BasicRelief)})
+		w.Write([]string{"Parents Relief", fmt.Sprintf("%.2f", c.ParentRelief)})
+		w.Write([]string{"Spouse Relief", fmt.Sprintf("%.2f", c.SpouseRelief)})
+		w.Write([]string{"Children Relief", fmt.Sprintf("%.2f", c.ChildRelief)})
+		w.Write([]string{"SSB Relief", fmt.Sprintf("%.2f", c.SSBRelief)})
 		w.Write([]string{"Total Taxable Income", fmt.Sprintf("%.2f", c.TotalTexable)})
 		w.Write([]string{"Total Reliefs", fmt.Sprintf("%.2f", c.TotalRelief)})
 		w.Write([]string{"Total Tax", fmt.Sprintf("%.2f", c.TotalTax)})
