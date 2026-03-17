@@ -61,10 +61,10 @@
 
 ### Implementation for User Story 2
 
-- [ ] T012 [US2] Add numeric validation to salary and bonus fields in `cmd/pitcalc_bubbletea/main.go`
-- [ ] T013 [US2] Add count validation for dependents (children >= 0, parents 0-2) in `cmd/pitcalc_bubbletea/main.go`
-- [ ] T014 [US2] Add SSB cap validation (max 30,000 MMK/month) in `cmd/pitcalc_bubbletea/main.go`
-- [ ] T015 [US2] Implement localized error messages for all validation rules in `cmd/pitcalc_bubbletea/main.go`
+- [x] T012 [US2] Add numeric validation to salary and bonus fields in `cmd/pitcalc_bubbletea/main.go`
+- [x] T013 [US2] Add count validation for dependents (children >= 0, parents 0-2) in `cmd/pitcalc_bubbletea/main.go`
+- [x] T014 [US2] Add SSB cap validation (max 30,000 MMK/month) in `cmd/pitcalc_bubbletea/main.go`
+- [x] T015 [US2] Implement localized error messages for all validation rules in `cmd/pitcalc_bubbletea/main.go`
 
 **Checkpoint**: Inputs are now robust and provide instant feedback to the user.
 
