@@ -4,6 +4,7 @@
 
 ### `TaxCalculatorForm`
 The primary state container during data collection.
+- `Language`: `string` ("EN" or "MY", default "EN")
 - `MonthlySalary`: `float64` (Input, > 0)
 - `YearlyBonus`: `float64` (Input, >= 0)
 - `SSBContribution`: `float64` (Input, >= 0, max 30,000 MMK/month)
@@ -13,13 +14,14 @@ The primary state container during data collection.
 - `LifeInsurancePremium`: `float64` (Input, >= 0)
 
 ### `TaxResultView`
-The summary view data structure.
+The summary view and export data structure.
 - `TotalIncome`: `float64`
 - `TotalReliefs`: `float64`
 - `TaxableIncome`: `float64`
 - `TaxPayable`: `float64`
 - `MonthlyTax`: `float64`
 - `Breakdown`: List of (Tax Layer, Rate, Amount)
+- `SelectedExportFormat`: `string` ("TXT", "JSON", "CSV", "None")
 
 ## Validation Rules
 - Monthly Salary must be numeric and positive.

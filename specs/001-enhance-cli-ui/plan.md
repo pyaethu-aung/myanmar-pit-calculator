@@ -4,18 +4,18 @@
 **Input**: Feature specification from `/specs/001-enhance-cli-ui/spec.md`
 
 ## Summary
-The goal is to modernize the Myanmar PIT Calculator's CLI by replacing the manual state management for data collection with `charmbracelet/huh`. This will provide a more polished, form-based input experience. Additionally, the results summary will be restructured using `bubbles/table` and styled with `lipgloss` to provide a premium, readable breakdown of tax calculations.
+The goal is to modernize the Myanmar PIT Calculator's CLI by replacing the manual state management for data collection with `charmbracelet/huh`. This will provide a more polished, form-based input experience organized into logical groups. Additionally, the CLI will support bilingual (English/Burmese) localization, "Copy to Clipboard" functionality using `atotto/clipboard`, and multi-format data export (TXT, JSON, CSV). The results summary will be restructured using `bubbles/table` and styled with `lipgloss` to provide a premium, readable breakdown of tax calculations.
 
 ## Technical Context
 
 **Language/Version**: Go 1.25.5
-**Primary Dependencies**: `github.com/charmbracelet/huh`, `github.com/charmbracelet/bubbletea`, `github.com/charmbracelet/lipgloss`, `github.com/charmbracelet/bubbles`
-**Storage**: N/A (State is ephemeral during CLI execution)
-**Testing**: `go test` for logic; manual verification for UI.
+**Primary Dependencies**: `github.com/charmbracelet/huh`, `github.com/charmbracelet/bubbletea`, `github.com/charmbracelet/lipgloss`, `github.com/charmbracelet/bubbles`, `github.com/atotto/clipboard`
+**Storage**: N/A (State is ephemeral; exports are file-based)
+**Testing**: `go test` for logic; manual verification for UI and localization.
 **Target Platform**: Terminal (CLI)
 **Project Type**: CLI tool
 **Performance Goals**: Sub-10ms response to keypresses.
-**Constraints**: Standard terminal emulator support.
+**Constraints**: Standard terminal emulator support (Unicode for Burmese).
 **Scale/Scope**: Single CLI entry point (`cmd/pitcalc_bubbletea/main.go`).
 
 ## Constitution Check
