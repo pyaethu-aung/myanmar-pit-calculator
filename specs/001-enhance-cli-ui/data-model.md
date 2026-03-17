@@ -15,11 +15,15 @@ The primary state container during data collection.
 
 ### `TaxResultView`
 The summary view and export data structure.
-- `TotalIncome`: `float64`
+- `GrossIncome`: `float64`
+- `BasicRelief`: `float64`
+- `ParentRelief`: `float64`
+- `SpouseRelief`: `float64`
+- `ChildRelief`: `float64`
+- `SSBRelief`: `float64`
 - `TotalReliefs`: `float64`
 - `TaxableIncome`: `float64`
 - `TaxPayable`: `float64`
-- `MonthlyTax`: `float64`
 - `Breakdown`: List of (Tax Layer, Rate, Amount)
 - `SelectedExportFormat`: `string` ("TXT", "JSON", "CSV", "None")
 
