@@ -43,11 +43,11 @@
 
 ### Implementation for User Story 1
 
-- [ ] T007 [US1] Implement Language selection group (EN/MY) at form start in `cmd/pitcalc_bubbletea/main.go`
-- [ ] T008 [US1] Implement "Income" group (Salary, Bonus) in `cmd/pitcalc_bubbletea/main.go`
-- [ ] T009 [US1] Implement "Reliefs" group (Spouse, Children, Parents) in `cmd/pitcalc_bubbletea/main.go`
-- [ ] T010 [US1] Implement "Other" group (SSB, Life Insurance) in `cmd/pitcalc_bubbletea/main.go`
-- [ ] T011 [US1] Wrap form in a `lipgloss` styled header banner in `cmd/pitcalc_bubbletea/main.go`
+- [x] T007 [US1] Implement Language selection group (EN/MY) at form start in `cmd/pitcalc_bubbletea/main.go`
+- [x] T008 [US1] Implement "Income" group (Salary, Bonus) in `cmd/pitcalc_bubbletea/main.go`
+- [x] T009 [US1] Implement "Reliefs" group (Spouse, Children, Parents) in `cmd/pitcalc_bubbletea/main.go`
+- [x] T010 [US1] Implement "Other" group (SSB, Life Insurance) in `cmd/pitcalc_bubbletea/main.go`
+- [x] T011 [US1] Wrap form in a `lipgloss` styled header banner in `cmd/pitcalc_bubbletea/main.go`
 
 **Checkpoint**: At this point, the data collection flow is modernized and functional.
 
