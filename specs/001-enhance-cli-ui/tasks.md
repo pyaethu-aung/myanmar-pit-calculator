@@ -15,9 +15,9 @@
 
 **Purpose**: Project initialization and basic structure
 
-- [ ] T001 Initialize Go project with `huh` and `clipboard` dependencies in `go.mod`
-- [ ] T002 [P] Configure `lipgloss` styles and color tokens in `cmd/pitcalc_bubbletea/main.go`
-- [ ] T003 [P] Setup bilingual translation map for EN/MY localization in `cmd/pitcalc_bubbletea/main.go`
+- [x] T001 Initialize Go project with `huh` and `clipboard` dependencies in `go.mod`
+- [x] T002 [P] Configure `lipgloss` styles and color tokens in `cmd/pitcalc_bubbletea/main.go`
+- [x] T003 [P] Setup bilingual translation map for EN/MY localization in `cmd/pitcalc_bubbletea/main.go`
 
 ---
 
@@ -27,9 +27,9 @@
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-- [ ] T004 Define `huh.Form` structure and groups in `cmd/pitcalc_bubbletea/main.go`
-- [ ] T005 [P] Implement state transition logic from form to result in `cmd/pitcalc_bubbletea/main.go`
-- [ ] T006 [P] Create rounding and currency formatting utilities in `cmd/pitcalc_bubbletea/main.go`
+- [x] T004 Define `huh.Form` structure and groups in `cmd/pitcalc_bubbletea/main.go`
+- [x] T005 [P] Implement state transition logic from form to result in `cmd/pitcalc_bubbletea/main.go`
+- [x] T006 [P] Create rounding and currency formatting utilities in `cmd/pitcalc_bubbletea/main.go`
 
 **Checkpoint**: Foundation ready - user story implementation can now begin in parallel
 
