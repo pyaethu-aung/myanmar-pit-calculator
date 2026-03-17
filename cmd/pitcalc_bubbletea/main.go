@@ -13,10 +13,11 @@ import (
 	"strings"
 
 	"github.com/atotto/clipboard"
-	"github.com/charmbracelet/bubbles/table"
+	"github.com/charmbracelet/bubbles/viewport"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/huh"
 	"github.com/charmbracelet/lipgloss"
+	lgtable "github.com/charmbracelet/lipgloss/table"
 	"golang.org/x/text/language"
 	"golang.org/x/text/message"
 
@@ -25,7 +26,7 @@ import (
 
 // To satisfy the compiler for now
 var _ = clipboard.WriteAll
-var _ = table.New
+var _ = viewport.New
 
 // --- T002: Lipgloss Styles & Tokens ---
 var (
@@ -222,7 +223,7 @@ type model struct {
 	errMessage   string
 	actionAlert  string
 	calcResult   *pitcalc.CalculatePITOutput
-	table        table.Model
+	viewport     viewport.Model
 
 	valSalary   string
 	valBonus    string
@@ -240,6 +241,7 @@ func initialModel() *model {
 		selectedLang: langEN,
 		valExportFormat: "txt",
 	}
+	m.viewport = viewport.New(0, 0)
 
 	m.initLangForm()
 	return m
@@ -321,19 +323,13 @@ func (m *model) initTaxForm() {
 	m.taxForm.Init()
 }
 
-func buildResultTable(c *pitcalc.CalculatePITOutput) table.Model {
-	columns := []table.Column{
-		{Title: "From", Width: 16},
-		{Title: "To", Width: 16},
-		{Title: "Tax Amount", Width: 18},
-	}
-	
+func buildTableString(c *pitcalc.CalculatePITOutput) string {
 	breakdown := c.TaxBreakdown
 	sort.Slice(breakdown, func(i, j int) bool {
 		return breakdown[i].Start < breakdown[j].Start
 	})
 	
-	var rows []table.Row
+	var rows [][]string
 	for _, v := range breakdown {
 		var limitStr string
 		if v.Limit == math.Inf(1) {
@@ -341,32 +337,27 @@ func buildResultTable(c *pitcalc.CalculatePITOutput) table.Model {
 		} else {
 			limitStr = currencyFormat(v.Limit)
 		}
-		rows = append(rows, table.Row{
+		rows = append(rows, []string{
 			currencyFormat(v.Start),
 			limitStr,
 			currencyFormat(v.Amount),
 		})
 	}
 
-	t := table.New(
-		table.WithColumns(columns),
-		table.WithRows(rows),
-		table.WithFocused(true),
-		table.WithHeight(len(rows)+1),
-	)
+	t := lgtable.New().
+		Border(lipgloss.NormalBorder()).
+		BorderStyle(lipgloss.NewStyle().Foreground(themeBorder)).
+		Headers("From", "To", "Tax Amount").
+		Rows(rows...).
+		StyleFunc(func(row, col int) lipgloss.Style {
+			s := lipgloss.NewStyle().Padding(0, 2)
+			if row == lgtable.HeaderRow {
+				return s.BorderBottom(true).BorderStyle(lipgloss.NormalBorder()).BorderForeground(themeBorder).Foreground(themeText)
+			}
+			return s.Foreground(themeText)
+		})
 	
-	s := table.DefaultStyles()
-	s.Header = s.Header.
-		BorderStyle(lipgloss.NormalBorder()).
-		BorderForeground(themeBorder).
-		BorderBottom(true).
-		Bold(false)
-	s.Selected = s.Selected.
-		Foreground(themeText).
-		Bold(false)
-	t.SetStyles(s)
-	
-	return t
+	return t.Render()
 }
 
 func buildResultView(m *model) string {
@@ -414,7 +405,7 @@ func buildResultView(m *model) string {
 		Foreground(lipgloss.Color("#F8FAFC")).
 		Render(fmt.Sprintf("%s: %s", t(l, "res_final_tax"), successStyle.Render(currencyFormat(c.TotalTax))))
 
-	tableRender := "\n" + m.table.View() + "\n"
+	tableRender := "\n" + buildTableString(c) + "\n"
 	
 	footer := lipgloss.NewStyle().Foreground(themeBorder).Render(t(l, "help_footer"))
 	if m.actionAlert != "" {
@@ -514,6 +505,7 @@ func (m *model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				} else {
 					m.actionAlert = t(m.selectedLang, "success_copy")
 				}
+				m.viewport.SetContent(buildResultView(m))
 				return m, nil
 			}
 			if msg.String() == "e" {
@@ -522,14 +514,15 @@ func (m *model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				return m, nil
 			}
 			
-			// Table navigation
+			// Viewport navigation
 			var cmd tea.Cmd
-			m.table, cmd = m.table.Update(msg)
+			m.viewport, cmd = m.viewport.Update(msg)
 			return m, cmd
 		}
 	
 	case tea.WindowSizeMsg:
-		m.table.SetWidth(msg.Width - 4)
+		m.viewport.Width = msg.Width - 4
+		m.viewport.Height = msg.Height - 10
 		return m, nil
 	}
 
@@ -579,7 +572,7 @@ func (m *model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				m.errMessage = err.Error()
 			} else {
 				m.calcResult = output
-				m.table = buildResultTable(output)
+				m.viewport.SetContent(buildResultView(m))
 			}
 			return m, nil
 		}
@@ -598,6 +591,7 @@ func (m *model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			} else {
 				m.actionAlert = t(m.selectedLang, "success_export")
 			}
+			m.viewport.SetContent(buildResultView(m))
 			return m, nil
 		}
 		return m, cmd
@@ -624,7 +618,7 @@ func (m *model) View() string {
 			return "\n" + banner + "\n\n" + errorStyle.Render("Error: " + m.errMessage)
 		}
 		if m.calcResult != nil {
-			return "\n" + banner + "\n\n" + buildResultView(m)
+			return "\n" + banner + "\n\n" + m.viewport.View()
 		}
 		return t(m.selectedLang, "calculating")
 	}

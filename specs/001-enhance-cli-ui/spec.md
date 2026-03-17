@@ -26,7 +26,7 @@ The current CLI provides a functional step-by-step wizard but lacks modern termi
 - Replace linear `fmt.Printf` blocks with structured `bubbles/table`.
 - Show Income and Reliefs side-by-side or clearly delineated.
 - Display detailed breakdowns of all user inputs (Gross Income, Basic Relief, Parents, Spouse, Children, SSB) instead of just total sums.
-- Include a formatted tax breakdown table (Limit vs. Amount).
+- Include a formatted tax breakdown table (Limit vs. Amount) with columns appropriately aligned and wide enough to prevent truncation of large currency strings.
 - Cohesive color scheme using soft colors.
 
 ### 3. Branding & Polish
