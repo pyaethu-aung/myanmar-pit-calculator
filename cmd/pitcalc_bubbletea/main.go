@@ -70,6 +70,10 @@ var trans = map[langKey]map[string]string{
 		"ssb_prompt":         "Total SSB Contribution (MMK)",
 		"calculating":        "Calculating...",
 		"err_validation":     "❌ Invalid input, please fix errors.",
+		"err_numeric":        "Must be a valid number",
+		"err_negative":       "Cannot be negative",
+		"err_parents":        "Parents must be 0, 1, or 2",
+		"err_ssb":            "Maximum SSB is 360,000",
 	},
 	langMY: {
 		"title":              "🇲🇲 မြန်မာ ဝင်ငွေခွန် တွက်စက်",
@@ -86,6 +90,10 @@ var trans = map[langKey]map[string]string{
 		"ssb_prompt":         "လူမှုဖူလုံရေး ထည့်ဝင်ငွေ စုစုပေါင်း (ကျပ်)",
 		"calculating":        "တွက်ချက်နေပါသည်...",
 		"err_validation":     "❌ ထည့်သွင်းထားသော အချက်အလက်များ မှားယွင်းနေပါသည်။",
+		"err_numeric":        "ကိန်းဂဏန်းသာ ဖြစ်ရမည်",
+		"err_negative":       "အနုတ်မရပါ",
+		"err_parents":        "မိဘ ယောက်ရေ ၀, ၁, သို့မဟုတ် ၂ သာ ထည့်ပါ",
+		"err_ssb":            "အများဆုံး ထည့်ဝင်ငွေ ၃၆၀,၀၀၀ ဖြစ်သည်",
 	},
 }
 
@@ -100,6 +108,58 @@ func parseNumericInput(input string) (*float64, error) {
 		return nil, errors.New("invalid numeric format")
 	}
 	return &value, nil
+}
+
+func validateNumeric(l langKey) func(string) error {
+	return func(s string) error {
+		if strings.TrimSpace(s) == "" {
+			return nil
+		}
+		val, err := parseNumericInput(s)
+		if err != nil {
+			return errors.New(t(l, "err_numeric"))
+		}
+		if val != nil && *val < 0 {
+			return errors.New(t(l, "err_negative"))
+		}
+		return nil
+	}
+}
+
+func validateParents(l langKey) func(string) error {
+	return func(s string) error {
+		if strings.TrimSpace(s) == "" {
+			return nil
+		}
+		val, err := parseNumericInput(s)
+		if err != nil {
+			return errors.New(t(l, "err_numeric"))
+		}
+		if val != nil && (*val < 0 || *val > 2) {
+			return errors.New(t(l, "err_parents"))
+		}
+		return nil
+	}
+}
+
+func validateSSB(l langKey) func(string) error {
+	return func(s string) error {
+		if strings.TrimSpace(s) == "" {
+			return nil
+		}
+		val, err := parseNumericInput(s)
+		if err != nil {
+			return errors.New(t(l, "err_numeric"))
+		}
+		if val != nil && *val < 0 {
+			return errors.New(t(l, "err_negative"))
+		}
+		// Based on max 30000 MMK/month SSB limit -> 360000 per year max allowed?
+		if val != nil && *val > 360000 {
+			return errors.New(t(l, "err_ssb"))
+		}
+		return nil
+	}
 }
 
 func t(lang langKey, id string) string {
@@ -175,10 +235,12 @@ func (m *model) initTaxForm() {
 			huh.NewInput().
 				Title(t(l, "salary_prompt")).
 				Placeholder("500000").
+				Validate(validateNumeric(l)).
 				Value(&m.valSalary),
 			huh.NewInput().
 				Title(t(l, "bonus_prompt")).
 				Placeholder("0").
+				Validate(validateNumeric(l)).
 				Value(&m.valBonus),
 		).Title(t(l, "income_group")),
 		
@@ -190,9 +252,11 @@ func (m *model) initTaxForm() {
 				Value(&m.valSpouse),
 			huh.NewInput().
 				Title(t(l, "children_prompt")).
+				Validate(validateNumeric(l)).
 				Value(&m.valChildren),
 			huh.NewInput().
 				Title(t(l, "parents_prompt")).
+				Validate(validateParents(l)).
 				Value(&m.valParents),
 		).Title(t(l, "reliefs_group")),
 		
@@ -201,6 +265,7 @@ func (m *model) initTaxForm() {
 			huh.NewInput().
 				Title(t(l, "ssb_prompt")).
 				Placeholder("72000").
+				Validate(validateSSB(l)).
 				Value(&m.valSSB),
 		).Title(t(l, "other_group")),
 	).WithTheme(huh.ThemeDracula())
