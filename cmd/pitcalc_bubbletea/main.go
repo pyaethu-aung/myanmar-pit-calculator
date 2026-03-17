@@ -46,7 +46,7 @@ var (
 	errorStyle = lipgloss.NewStyle().
 			Foreground(themeError).
 			Bold(true)
-			
+
 	successStyle = lipgloss.NewStyle().
 			Foreground(themePrimary).
 			Bold(true)
@@ -62,74 +62,74 @@ const (
 
 var trans = map[langKey]map[string]string{
 	langEN: {
-		"title":              "🇲🇲 Myanmar PIT Calculator",
-		"lang_prompt":        "Select Language",
-		"income_group":       "Income Details",
-		"salary_prompt":      "Monthly Salary (MMK)",
-		"bonus_prompt":       "Yearly Bonus (MMK) [Optional]",
-		"reliefs_group":      "Tax Reliefs",
-		"spouse_prompt":      "Dependent Spouse?",
-		"spouse_desc":        "Is your spouse currently unemployed or not earning?",
-		"children_prompt":    "Number of Dependent Children",
-		"parents_prompt":     "Number of Dependent Parents",
-		"other_group":        "Other Allowances",
-		"ssb_prompt":         "Total SSB Contribution (MMK)",
-		"calculating":        "Calculating...",
-		"err_validation":     "❌ Invalid input, please fix errors.",
-		"err_numeric":        "Must be a valid number",
-		"err_negative":       "Cannot be negative",
-		"err_parents":        "Parents must be 0, 1, or 2",
-		"err_ssb":            "Maximum SSB is 360,000",
-		"res_income":         "📊 Income Details",
-		"res_reliefs":        "🛡️  Tax Reliefs",
-		"res_total_income":   "Total Taxable Income",
-		"res_total_reliefs":  "Total Reliefs",
-		"res_final_tax":      "💎 Final Tax",
-		"export_prompt":      "Choose Export Format",
-		"success_copy":       "📋 Copied to clipboard!",
-		"success_export":     "📁 Exported to PIT_Report.",
-		"help_footer":        "c: Copy to clipboard • e: Export file • q: Quit",
-		"res_gross_income":   "Gross Income (Yearly)",
-		"res_basic_relief":   "Basic (20%, max 10M)",
-		"res_parent_relief":  "Parents",
-		"res_spouse_relief":  "Spouse",
-		"res_child_relief":   "Children",
-		"res_ssb_relief":     "SSB",
+		"title":             "🇲🇲 Myanmar PIT Calculator",
+		"lang_prompt":       "Select Language",
+		"income_group":      "Income Details",
+		"salary_prompt":     "Monthly Salary (MMK)",
+		"bonus_prompt":      "Yearly Bonus (MMK) [Optional]",
+		"reliefs_group":     "Tax Reliefs",
+		"spouse_prompt":     "Dependent Spouse?",
+		"spouse_desc":       "Is your spouse currently unemployed or not earning?",
+		"children_prompt":   "Number of Dependent Children",
+		"parents_prompt":    "Number of Dependent Parents",
+		"other_group":       "Other Allowances",
+		"ssb_prompt":        "Total SSB Contribution (MMK)",
+		"calculating":       "Calculating...",
+		"err_validation":    "❌ Invalid input, please fix errors.",
+		"err_numeric":       "Must be a valid number",
+		"err_negative":      "Cannot be negative",
+		"err_parents":       "Parents must be 0, 1, or 2",
+		"err_ssb":           "Maximum SSB is 360,000",
+		"res_income":        "📊 Income Details",
+		"res_reliefs":       "🛡️  Tax Reliefs",
+		"res_total_income":  "Total Taxable Income",
+		"res_total_reliefs": "Total Reliefs",
+		"res_final_tax":     "💎 Final Tax",
+		"export_prompt":     "Choose Export Format",
+		"success_copy":      "📋 Copied to clipboard!",
+		"success_export":    "📁 Exported to PIT_Report.",
+		"help_footer":       "c: Copy to clipboard • e: Export file • q: Quit",
+		"res_gross_income":  "Gross Income (Yearly)",
+		"res_basic_relief":  "Basic (20%, max 10M)",
+		"res_parent_relief": "Parents",
+		"res_spouse_relief": "Spouse",
+		"res_child_relief":  "Children",
+		"res_ssb_relief":    "SSB",
 	},
 	langMY: {
-		"title":              "🇲🇲 မြန်မာ ဝင်ငွေခွန် တွက်စက်",
-		"lang_prompt":        "ဘာသာစကား ရွေးချယ်ပါ",
-		"income_group":       "ဝင်ငွေ အသေးစိတ်",
-		"salary_prompt":      "လစဉ်လစာ (ကျပ်)",
-		"bonus_prompt":       "နှစ်စဉ် ဆုကြေး (ကျပ်) [ရွေးချယ်ရန်]",
-		"reliefs_group":      "အခွန်သက်သာခွင့်များ",
-		"spouse_prompt":      "မှီခို ဇနီး/ခင်ပွန်း ရှိပါသလား?",
-		"spouse_desc":        "အလုပ်လုပ်ကိုင်ခြင်းမရှိသော အိမ်ထောင်ဖက်",
-		"children_prompt":    "မှီခို ကလေး အရေအတွက်",
-		"parents_prompt":     "မှီခို မိဘ အရေအတွက်",
-		"other_group":        "အခြားသော ခွင့်ပြုချက်များ",
-		"ssb_prompt":         "လူမှုဖူလုံရေး ထည့်ဝင်ငွေ စုစုပေါင်း (ကျပ်)",
-		"calculating":        "တွက်ချက်နေပါသည်...",
-		"err_validation":     "❌ ထည့်သွင်းထားသော အချက်အလက်များ မှားယွင်းနေပါသည်။",
-		"err_numeric":        "ကိန်းဂဏန်းသာ ဖြစ်ရမည်",
-		"err_negative":       "အနုတ်မရပါ",
-		"err_parents":        "မိဘ ယောက်ရေ ၀, ၁, သို့မဟုတ် ၂ သာ ထည့်ပါ",
-		"err_ssb":            "အများဆုံး ထည့်ဝင်ငွေ ၃၆၀,၀၀၀ ဖြစ်သည်",
-		"res_income":         "📊 ဝင်ငွေ အသေးစိတ်",
-		"res_reliefs":        "🛡️  အခွန်သက်သာခွင့်များ",
-		"res_total_income":   "အခွန်စည်းကြပ်ရန် ဝင်ငွေ",
-		"res_total_reliefs":  "သက်သာခွင့် စုစုပေါင်း",
-		"res_final_tax":      "💎 ကျသင့် အခွန်ငွေ",
-		"export_prompt":      "ပို့ဆောင်မည့် ပုံစံရွေးပါ",
-		"success_copy":       "📋 ကူးယူပြီးပါပြီ!",
-		"success_export":     "📁 PIT_Report သို့ မှတ်တမ်းတင်ပြီးပါပြီ။",
-		"help_footer":        "c: ကူးယူမည် • e: ဖိုင်ထုတ်မည် • q: ထွက်မည်",
-		"res_gross_income":   "နှစ်စဉ် စုစုပေါင်း ဝင်ငွေ",
-		"res_basic_relief":   "အခြေခံ (၂၀% အများဆုံး သိန်း ၁၀၀)",
-		"res_parent_relief":  "မိဘ",
-		"res_spouse_relief":  "အိမ်ထောင်ဖက်",
-		"res_child_relief":   "ကလေး",
-		"res_ssb_relief":     "လူမှုဖူလုံရေး",
+		"title":             "🇲🇲 မြန်မာ ဝင်ငွေခွန် တွက်စက်",
+		"lang_prompt":       "ဘာသာစကား ရွေးချယ်ပါ",
+		"income_group":      "ဝင်ငွေ အသေးစိတ်",
+		"salary_prompt":     "လစဉ်လစာ (ကျပ်)",
+		"bonus_prompt":      "နှစ်စဉ် ဆုကြေး (ကျပ်) [ရွေးချယ်ရန်]",
+		"reliefs_group":     "အခွန်သက်သာခွင့်များ",
+		"spouse_prompt":     "မှီခို ဇနီး/ခင်ပွန်း ရှိပါသလား?",
+		"spouse_desc":       "အလုပ်လုပ်ကိုင်ခြင်းမရှိသော အိမ်ထောင်ဖက်",
+		"children_prompt":   "မှီခို ကလေး အရေအတွက်",
+		"parents_prompt":    "မှီခို မိဘ အရေအတွက်",
+		"other_group":       "အခြားသော ခွင့်ပြုချက်များ",
+		"ssb_prompt":        "လူမှုဖူလုံရေး ထည့်ဝင်ငွေ စုစုပေါင်း (ကျပ်)",
+		"calculating":       "တွက်ချက်နေပါသည်...",
+		"err_validation":    "❌ ထည့်သွင်းထားသော အချက်အလက်များ မှားယွင်းနေပါသည်။",
+		"err_numeric":       "ကိန်းဂဏန်းသာ ဖြစ်ရမည်",
+		"err_negative":      "အနုတ်မရပါ",
+		"err_parents":       "မိဘ ယောက်ရေ ၀, ၁, သို့မဟုတ် ၂ သာ ထည့်ပါ",
+		"err_ssb":           "အများဆုံး ထည့်ဝင်ငွေ ၃၆၀,၀၀၀ ဖြစ်သည်",
+		"res_income":        "📊 ဝင်ငွေ အသေးစိတ်",
+		"res_reliefs":       "🛡️  အခွန်သက်သာခွင့်များ",
+		"res_total_income":  "အခွန်စည်းကြပ်ရန် ဝင်ငွေ",
+		"res_total_reliefs": "သက်သာခွင့် စုစုပေါင်း",
+		"res_final_tax":     "💎 ကျသင့် အခွန်ငွေ",
+		"export_prompt":     "ပို့ဆောင်မည့် ပုံစံရွေးပါ",
+		"success_copy":      "📋 ကူးယူပြီးပါပြီ!",
+		"success_export":    "📁 PIT_Report သို့ မှတ်တမ်းတင်ပြီးပါပြီ။",
+		"help_footer":       "c: ကူးယူမည် • e: ဖိုင်ထုတ်မည် • q: ထွက်မည်",
+		"res_gross_income":  "နှစ်စဉ် စုစုပေါင်း ဝင်ငွေ",
+		"res_basic_relief":  "အခြေခံ (၂၀% အများဆုံး သိန်း ၁၀၀)",
+		"res_parent_relief": "မိဘ",
+		"res_spouse_relief": "အိမ်ထောင်ဖက်",
+		"res_child_relief":  "ကလေး",
+		"res_ssb_relief":    "လူမှုဖူလုံရေး",
 	},
 }
 
@@ -231,14 +231,14 @@ type model struct {
 	valChildren string
 	valParents  string
 	valSSB      string
-	
+
 	valExportFormat string
 }
 
 func initialModel() *model {
 	m := &model{
-		state:        stateLang,
-		selectedLang: langEN,
+		state:           stateLang,
+		selectedLang:    langEN,
 		valExportFormat: "txt",
 	}
 	m.viewport = viewport.New(0, 0)
@@ -293,7 +293,7 @@ func (m *model) initTaxForm() {
 				Validate(validateNumeric(l)).
 				Value(&m.valBonus),
 		).Title(t(l, "income_group")),
-		
+
 		huh.NewGroup(
 			huh.NewConfirm().
 				Title(t(l, "spouse_prompt")).
@@ -310,7 +310,7 @@ func (m *model) initTaxForm() {
 				Validate(validateParents(l)).
 				Value(&m.valParents),
 		).Title(t(l, "reliefs_group")),
-		
+
 		huh.NewGroup(
 			huh.NewInput().
 				Title(t(l, "ssb_prompt")).
@@ -328,7 +328,7 @@ func buildTableString(c *pitcalc.CalculatePITOutput) string {
 	sort.Slice(breakdown, func(i, j int) bool {
 		return breakdown[i].Start < breakdown[j].Start
 	})
-	
+
 	var rows [][]string
 	for _, v := range breakdown {
 		var limitStr string
@@ -356,12 +356,14 @@ func buildTableString(c *pitcalc.CalculatePITOutput) string {
 			}
 			return s.Foreground(themeText)
 		})
-	
+
 	return t.Render()
 }
 
 func buildResultView(m *model) string {
-	if m.calcResult == nil { return "" }
+	if m.calcResult == nil {
+		return ""
+	}
 	c := m.calcResult
 	l := m.selectedLang
 
@@ -370,7 +372,7 @@ func buildResultView(m *model) string {
 		successStyle.Render(t(l, "res_income")),
 		t(l, "res_gross_income"), currencyFormat(c.GrossIncome),
 		t(l, "res_total_income"), currencyFormat(c.TotalTexable))
-	
+
 	incomeBox := lipgloss.NewStyle().
 		Border(lipgloss.RoundedBorder()).
 		BorderForeground(themeBorder).
@@ -387,7 +389,7 @@ func buildResultView(m *model) string {
 		t(l, "res_child_relief"), currencyFormat(c.ChildRelief),
 		t(l, "res_ssb_relief"), currencyFormat(c.SSBRelief),
 		t(l, "res_total_reliefs"), currencyFormat(c.TotalRelief))
-		
+
 	reliefsBox := lipgloss.NewStyle().
 		Border(lipgloss.RoundedBorder()).
 		BorderForeground(themeBorder).
@@ -396,7 +398,7 @@ func buildResultView(m *model) string {
 		Render(reliefsText)
 
 	topRow := lipgloss.JoinHorizontal(lipgloss.Top, incomeBox, "  ", reliefsBox)
-	
+
 	// Final Result Box
 	finalBox := lipgloss.NewStyle().
 		MarginTop(1).
@@ -406,7 +408,7 @@ func buildResultView(m *model) string {
 		Render(fmt.Sprintf("%s: %s", t(l, "res_final_tax"), successStyle.Render(currencyFormat(c.TotalTax))))
 
 	tableRender := "\n" + buildTableString(c) + "\n"
-	
+
 	footer := lipgloss.NewStyle().Foreground(themeBorder).Render(t(l, "help_footer"))
 	if m.actionAlert != "" {
 		footer = successStyle.Render(m.actionAlert) + "\n" + footer
@@ -428,7 +430,7 @@ func generatePlainTextReport(c *pitcalc.CalculatePITOutput) string {
 	b.WriteString(fmt.Sprintf("\nTotal Taxable Income: %s\n", currencyFormat(c.TotalTexable)))
 	b.WriteString(fmt.Sprintf("Total Reliefs: %s\n", currencyFormat(c.TotalRelief)))
 	b.WriteString(fmt.Sprintf("\nTOTAL TAX: %s\n\n", currencyFormat(c.TotalTax)))
-	
+
 	b.WriteString("Tax Breakdown:\n")
 	for _, v := range c.TaxBreakdown {
 		limitStr := "And above"
@@ -443,18 +445,22 @@ func generatePlainTextReport(c *pitcalc.CalculatePITOutput) string {
 // --- T020: Export Writers ---
 func exportToFile(format string, c *pitcalc.CalculatePITOutput) error {
 	filename := "PIT_Report." + format
-	
+
 	switch format {
 	case "json":
 		data, err := json.MarshalIndent(c, "", "  ")
-		if err != nil { return err }
+		if err != nil {
+			return err
+		}
 		return os.WriteFile(filename, data, 0644)
-	
+
 	case "csv":
 		f, err := os.Create(filename)
-		if err != nil { return err }
+		if err != nil {
+			return err
+		}
 		defer f.Close()
-		
+
 		w := csv.NewWriter(f)
 		w.Write([]string{"Metric", "Value (MMK)"})
 		w.Write([]string{"Gross Income (Yearly)", fmt.Sprintf("%.2f", c.GrossIncome)})
@@ -467,16 +473,18 @@ func exportToFile(format string, c *pitcalc.CalculatePITOutput) error {
 		w.Write([]string{"Total Reliefs", fmt.Sprintf("%.2f", c.TotalRelief)})
 		w.Write([]string{"Total Tax", fmt.Sprintf("%.2f", c.TotalTax)})
 		w.Write([]string{"", ""})
-		
+
 		w.Write([]string{"Breakdown From", "Breakdown To", "Tax Amount"})
 		for _, tb := range c.TaxBreakdown {
 			limit := fmt.Sprintf("%.2f", tb.Limit)
-			if tb.Limit == math.Inf(1) { limit = "And above" }
+			if tb.Limit == math.Inf(1) {
+				limit = "And above"
+			}
 			w.Write([]string{fmt.Sprintf("%.2f", tb.Start), limit, fmt.Sprintf("%.2f", tb.Amount)})
 		}
 		w.Flush()
 		return w.Error()
-		
+
 	default: // txt
 		return os.WriteFile(filename, []byte(generatePlainTextReport(c)), 0644)
 	}
@@ -493,7 +501,7 @@ func (m *model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		if msg.String() == "ctrl+c" {
 			return m, tea.Quit
 		}
-		
+
 		if m.state == stateResult {
 			if msg.String() == "q" {
 				return m, tea.Quit
@@ -513,13 +521,13 @@ func (m *model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				m.initExportForm()
 				return m, nil
 			}
-			
+
 			// Viewport navigation
 			var cmd tea.Cmd
 			m.viewport, cmd = m.viewport.Update(msg)
 			return m, cmd
 		}
-	
+
 	case tea.WindowSizeMsg:
 		m.viewport.Width = msg.Width - 4
 		m.viewport.Height = msg.Height - 10
@@ -553,20 +561,40 @@ func (m *model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			ssb, _ := parseNumericInput(m.valSSB)
 			children, _ := parseNumericInput(m.valChildren)
 			parents, _ := parseNumericInput(m.valParents)
-			
-			rawSalary := 0.0; if salary != nil { rawSalary = *salary }
-			rawBonus := 0.0; if bonus != nil { rawBonus = *bonus }
-			rawSSB := 0.0; if ssb != nil { rawSSB = *ssb }
-			rawChildren := 0.0; if children != nil { rawChildren = *children }
-			rawParents := 0.0; if parents != nil { rawParents = *parents }
-			
+
+			rawSalary := 0.0
+			if salary != nil {
+				rawSalary = *salary
+			}
+			rawBonus := 0.0
+			if bonus != nil {
+				rawBonus = *bonus
+			}
+			rawSSB := 0.0
+			if ssb != nil {
+				rawSSB = *ssb
+			}
+			rawChildren := 0.0
+			if children != nil {
+				rawChildren = *children
+			}
+			rawParents := 0.0
+			if parents != nil {
+				rawParents = *parents
+			}
+
 			output, err := pitcalc.CalculatePIT(pitcalc.CalculatePITInput{
 				MonthlyIncome:    rawSalary + (rawBonus / 12),
 				StartingMonth:    4,
 				DependentParents: int64(rawParents),
-				DependentSpouse:  func() int64 { if m.valSpouse { return 1 }; return 0 }(),
-				Childrens:        int64(rawChildren),
-				SSB:              rawSSB,
+				DependentSpouse: func() int64 {
+					if m.valSpouse {
+						return 1
+					}
+					return 0
+				}(),
+				Childrens: int64(rawChildren),
+				SSB:       rawSSB,
 			})
 			if err != nil {
 				m.errMessage = err.Error()
@@ -602,11 +630,11 @@ func (m *model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 func (m *model) View() string {
 	banner := headerStyle.Render(t(m.selectedLang, "title"))
-	
+
 	switch m.state {
 	case stateLang:
 		return "\n" + banner + "\n\n" + m.langForm.View()
-		
+
 	case stateForm:
 		return "\n" + banner + "\n\n" + m.taxForm.View()
 
@@ -615,7 +643,7 @@ func (m *model) View() string {
 
 	case stateResult:
 		if m.errMessage != "" {
-			return "\n" + banner + "\n\n" + errorStyle.Render("Error: " + m.errMessage)
+			return "\n" + banner + "\n\n" + errorStyle.Render("Error: "+m.errMessage)
 		}
 		if m.calcResult != nil {
 			return "\n" + banner + "\n\n" + m.viewport.View()
