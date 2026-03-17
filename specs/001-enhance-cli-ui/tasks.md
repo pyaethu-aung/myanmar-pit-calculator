@@ -78,11 +78,11 @@
 
 ### Implementation for User Story 3
 
-- [ ] T016 [US3] Implement `bubbles/table` for the final tax breakdown in `cmd/pitcalc_bubbletea/main.go`
-- [ ] T017 [US3] Implement side-by-side layout for Income vs Reliefs using `lipgloss` in `cmd/pitcalc_bubbletea/main.go`
-- [ ] T018 [US3] Add "Copy to Clipboard" keybinding using `atotto/clipboard` in `cmd/pitcalc_bubbletea/main.go`
-- [ ] T019 [US3] Implement export menu for TXT, JSON, and CSV formats in `cmd/pitcalc_bubbletea/main.go`
-- [ ] T020 [US3] Implement file system writers for each export format in `cmd/pitcalc_bubbletea/main.go`
+- [x] T016 [US3] Implement `bubbles/table` for the final tax breakdown in `cmd/pitcalc_bubbletea/main.go`
+- [x] T017 [US3] Implement side-by-side layout for Income vs Reliefs using `lipgloss` in `cmd/pitcalc_bubbletea/main.go`
+- [x] T018 [US3] Add "Copy to Clipboard" keybinding using `atotto/clipboard` in `cmd/pitcalc_bubbletea/main.go`
+- [x] T019 [US3] Implement export menu for TXT, JSON, and CSV formats in `cmd/pitcalc_bubbletea/main.go`
+- [x] T020 [US3] Implement file system writers for each export format in `cmd/pitcalc_bubbletea/main.go`
 
 **Checkpoint**: Final result is premium, readable, and portable.
 
