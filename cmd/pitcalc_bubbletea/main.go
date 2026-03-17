@@ -222,8 +222,8 @@ type model struct {
 	valExportFormat string
 }
 
-func initialModel() model {
-	m := model{
+func initialModel() *model {
+	m := &model{
 		state:        stateLang,
 		selectedLang: langEN,
 		valSSB:       "72000",
@@ -358,7 +358,7 @@ func buildResultTable(c *pitcalc.CalculatePITOutput) table.Model {
 	return t
 }
 
-func buildResultView(m model) string {
+func buildResultView(m *model) string {
 	if m.calcResult == nil { return "" }
 	c := m.calcResult
 	l := m.selectedLang
@@ -463,12 +463,12 @@ func exportToFile(format string, c *pitcalc.CalculatePITOutput) error {
 	}
 }
 
-func (m model) Init() tea.Cmd {
+func (m *model) Init() tea.Cmd {
 	return m.langForm.Init()
 }
 
 // --- T005: State Transition Logic ---
-func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
+func (m *model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg := msg.(type) {
 	case tea.KeyMsg:
 		if msg.String() == "ctrl+c" {
@@ -578,7 +578,7 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	return m, nil
 }
 
-func (m model) View() string {
+func (m *model) View() string {
 	banner := headerStyle.Render(t(m.selectedLang, "title"))
 	
 	switch m.state {
