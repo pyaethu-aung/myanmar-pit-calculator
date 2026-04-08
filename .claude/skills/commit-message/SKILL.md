@@ -1,6 +1,6 @@
 ---
 name: commit-message
-description: Commit message rules for this project. Use when creating git commits, amending messages, or reviewing commit history. Covers Conventional Commits format, the 50/72 subject/body rule, and atomic commit discipline.
+description: Use when creating or amending git commits. Enforces atomic commits, the 50/72 subject/body rule, and Conventional Commits format.
 allowed-tools: Bash(git:*)
 ---
 
