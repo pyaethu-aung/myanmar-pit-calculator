@@ -105,21 +105,22 @@ String-based input is no longer accepted.
 
 Simple fix (subject only):
 ```
-fix(calculator): handle negative income edge case
+fix(auth): prevent session token from expiring prematurely
 ```
 
 Feature with body:
 ```
-feat(ui): add responsive table for tax breakdown
+feat(api): add pagination support to list endpoints
 
-Replaces the fixed-width layout with a lipgloss table that
-adapts to the terminal viewport. Improves readability on
-narrow terminals.
+Without pagination, list endpoints return all records in a single
+response. This causes memory spikes and slow response times as
+data grows. Adds cursor-based pagination with a default page size
+of 20.
 ```
 
 Dependency bump:
 ```
-chore(deps): bump charmbracelet/bubbletea from v1.3.9 to v1.3.10
+chore(deps): bump golang.org/x/sys from v0.38.0 to v0.43.0
 ```
 
 CI change:
