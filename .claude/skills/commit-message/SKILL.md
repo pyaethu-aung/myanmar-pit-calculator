@@ -21,6 +21,9 @@ Each commit must represent one logical, self-contained change.
 - **Builds at every commit**: the codebase must compile and tests must pass at every commit
 - **Reviewable in isolation**: a reviewer should understand the change without needing context from adjacent commits
 
+If `git diff --staged` spans multiple concerns, stage and commit
+each one separately before writing the message.
+
 **Wrong**: `"fix login bug and update dependencies and refactor auth"`
 **Right**: three separate commits, one per concern
 
