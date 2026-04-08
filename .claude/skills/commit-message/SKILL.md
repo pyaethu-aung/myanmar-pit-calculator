@@ -6,7 +6,12 @@ allowed-tools: Bash(git log:*) Bash(git diff:*) Bash(git status:*)
 
 # Commit Message Rules
 
-Follow these rules for every commit in this project.
+Follow these rules for every commit.
+
+## Staged changes
+```!
+git diff --staged
+```
 
 ## 1. Atomic Commits
 
