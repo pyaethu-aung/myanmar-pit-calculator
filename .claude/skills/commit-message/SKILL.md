@@ -1,7 +1,7 @@
 ---
 name: commit-message
 description: Use when creating or amending git commits. Enforces atomic commits, the 50/72 subject/body rule, and Conventional Commits format.
-allowed-tools: Bash(git:*)
+allowed-tools: Bash(git log:*) Bash(git diff:*) Bash(git status:*)
 ---
 
 # Commit Message Rules
