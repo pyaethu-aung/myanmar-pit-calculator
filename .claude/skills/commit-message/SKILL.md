@@ -1,7 +1,7 @@
 ---
 name: commit-message
 description: Use when creating or amending git commits. Enforces atomic commits, the 50/72 subject/body rule, and Conventional Commits format.
-allowed-tools: Bash(git log:*) Bash(git diff:*) Bash(git status:*) Bash(git add:*)
+allowed-tools: Bash(git log:*) Bash(git diff:*) Bash(git status:*) Bash(git add:*) Bash(git commit:*)
 ---
 
 # Commit Message Rules
@@ -124,6 +124,28 @@ feat(api)!: change income input from string to integer
 BREAKING CHANGE: income values must now be integers.
 String-based input is no longer accepted.
 ```
+
+## 4. Confirmation Before Commit
+
+After drafting the commit message, always pause and show the user a
+summary before running `git commit`:
+
+```
+Files to be committed:
+  <list from git diff --staged --name-only>
+
+Proposed message:
+  <full commit message>
+
+Proceed? (yes / edit message / cancel)
+```
+
+- **yes** — run `git commit -m "<message>"`
+- **edit message** — ask the user what to change, revise, and show the
+  summary again
+- **cancel** — stop without committing; leave the index as-is
+
+Do not run `git commit` until the user explicitly confirms.
 
 ## Examples
 
