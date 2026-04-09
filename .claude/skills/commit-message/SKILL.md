@@ -1,17 +1,42 @@
 ---
 name: commit-message
 description: Use when creating or amending git commits. Enforces atomic commits, the 50/72 subject/body rule, and Conventional Commits format.
-allowed-tools: Bash(git log:*) Bash(git diff:*) Bash(git status:*)
+allowed-tools: Bash(git log:*) Bash(git diff:*) Bash(git status:*) Bash(git add:*)
 ---
 
 # Commit Message Rules
 
 Follow these rules for every commit.
 
+## Working tree status
+```!
+git status --short
+```
+
 ## Staged changes
 ```!
 git diff --staged
 ```
+
+If the staged diff above is empty, inspect the working tree status above:
+
+- If there are unstaged or untracked changes, infer which files belong to
+  the same logical change based on their names and paths, then stage them
+  with `git add <files>` and proceed.
+- If there are no changes at all, stop and tell the user:
+  "Nothing to commit — working tree is clean."
+- If the changes span multiple unrelated concerns, stage only the files
+  that form one logical change, tell the user what you staged and why,
+  and note that the remaining files should be committed separately.
+
+## Recent commit history
+```!
+git log --oneline -10
+```
+
+Use the history above to match this project's existing commit style
+(types, scopes, level of detail in subjects). If the project deviates
+from Conventional Commits, follow the project's established pattern.
 
 ## 1. Atomic Commits
 
@@ -21,11 +46,9 @@ Each commit must represent one logical, self-contained change.
 - **Builds at every commit**: the codebase must compile and tests must pass at every commit
 - **Reviewable in isolation**: a reviewer should understand the change without needing context from adjacent commits
 
-If `git diff --staged` spans multiple concerns, stage and commit
-each one separately before writing the message.
-
-**Wrong**: `"fix login bug and update dependencies and refactor auth"`
-**Right**: three separate commits, one per concern
+If `git diff --staged` spans multiple concerns, stop and tell the user
+which concerns you see, then ask them to stage and commit each one
+separately using `git add -p` or by staging specific files.
 
 ## 2. The 50/72 Rule
 
@@ -89,6 +112,7 @@ chore(deps): bump golang.org/x/sys from v0.38.0 to v0.43.0
 - Format: `Token: value` (hyphens in token names, not spaces)
 - Common tokens: `Fixes`, `Closes`, `Refs`, `Reviewed-by`, `BREAKING CHANGE`
 - `BREAKING CHANGE` must be uppercase
+- **Never** add a `Co-Authored-By` trailer — omit it even if suggested
 
 ### Breaking changes
 
